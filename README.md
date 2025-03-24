@@ -1,19 +1,25 @@
-# Semantic Release Repo Template
+# Israeli Banks → Actual Budget
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![XO code style](https://shields.io/badge/code_style-5ed9c7?logo=xo&labelColor=gray)](https://github.com/xojs/xo)
 [![Snyk Security](../../actions/workflows/snyk-security.yml/badge.svg)](../../actions/workflows/snyk-security.yml)
 [![CodeQL](../../actions/workflows/codeql.yml/badge.svg)](../../actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tomerh2001/semantic-release-repo-template/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tomerh2001/semantic-release-repo-template)
 
-# Configuration
-> [!NOTE]
-> Go to [Repository Secrets](../../settings/secrets/actions) settings and add the following:
+This repository provides a simple script to import transactions from Israeli banks (via [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers)) into [Actual Budget](https://github.com/actualbudget/actual).
 
-| Name                      | Description                                | Required |
-| ------------------------- | ------------------------------------------ | -------- |
-| GH_TOKEN                  | Github Token                               | Yes      |
-| NPM_TOKEN                 | NPM Token for publishing to NPM from CI/CD | Recommended |
-| CODECOV_TOKEN             | Codecov Token for coverage tests | Recommended |
-| SNYK_TOKEN                | Snyk Token for security tests    | Recommended |
-| DOCKER_REGISTRY_USER      | Docker registry user             | Optional    |
-| DOCKER_REGISTRY_PASSWORD  | Docker registry password         | Optional
+# Features
+1. Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
+1. Automatically **creates new Actual accounts** if none exist.
+2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
+3. Configurable via a single JSON file specifying bank credentials, start dates, etc.
+
+# Logging & Errors
+The script logs each step (connections, scraping, account creation, transaction import results). If any errors occur, they are printed to stderr.
+
+# Common error scenarios
+- Wrong credentials (scraper fails).
+- Actual Budget server is not running or wrong credentials (password).
+- Conflicting or missing environment/config.
+
+# Contributing
+Feel free to open pull requests and issues! Suggestions or improvements are welcome.
