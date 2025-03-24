@@ -3,7 +3,8 @@ name: Semantic Versioning
 on:
   push:
     branches:
-      - main # or master, or whichever branch you want this to run on
+      - main 
+      - develop
 
 jobs:
   release:
