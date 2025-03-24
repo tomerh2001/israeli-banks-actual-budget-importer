@@ -7,7 +7,7 @@
 
 This project provides an importer from Israeli banks (via [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers)) into [Actual Budget](https://github.com/actualbudget/actual).
 
-# Features
+## Features
 1. Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
 1. Automatically **creates new Actual accounts** if none exist.
 2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
@@ -17,5 +17,5 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 > [!NOTE]  
 > This importer is still WIP.
 
-# Contributing
+## Contributing
 Feel free to open pull requests and issues! Suggestions or improvements are welcome.
