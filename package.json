@@ -1,7 +1,12 @@
 {
+  "version": "1.0.0-beta.1",
   "name": "israeli-banks-actual-budget-importer",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun src",
+    "test": "xo"
+  },
   "devDependencies": {
     "@codedependant/semantic-release-docker": "^5.1.0",
     "@semantic-release/changelog": "^6.0.3",
@@ -10,15 +15,17 @@
     "@semantic-release/github": "^11.0.1",
     "@semantic-release/npm": "^12.0.1",
     "@semantic-release/release-notes-generator": "^14.0.3",
+    "@types/lodash": "^4",
     "bun-types": "latest",
     "xo": "^0.60.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.2"
   },
-  "version": "1.0.0-beta.1",
-  "scripts": {
-    "test": "xo"
-  },
-  "packageManager": "yarn@4.7.0"
+  "packageManager": "yarn@4.7.0",
+  "dependencies": {
+    "israeli-bank-scrapers": "^5.4.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1"
+  }
 }
