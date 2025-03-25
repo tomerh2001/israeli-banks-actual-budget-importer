@@ -15,30 +15,34 @@ async function scrape(companyId: CompanyTypes, credentials: ScraperCredentials) 
 		verbose: true,
 	});
 	scraper.onProgress((companyId, payload) => {
-		console.log('Progress', companyId, payload);
+		console.debug('Progress', companyId, payload);
 	});
-	console.log('Scraper created', companyId);
 
 	const result = await scraper.scrape(credentials);
 	if (!result.success) {
 		throw new Error(`Failed to scrape (${result.errorType}): ${result.errorMessage}`);
 	}
 
+	const transactions = _(result.accounts)
+		.filter(account => account.txns.length > 0)
+		.flatMap(account => account.txns)
+		.value();
+
 	for (const account of result.accounts!) {
-		console.log('Account', _.pick(account, ['accountNumber', 'balance']), 'Transactions', account.txns.length);
-		if (account.txns.length === 0) {
-			console.log('No transactions, skipping');
+		if (account.txns.length <= 0) {
 			continue;
 		}
 
-		const csv = papa.unparse(account.txns);
-		fs.mkdirSync('artifacts', {recursive: true});
-		fs.writeFileSync(`artifacts/${account.accountNumber}.csv`, csv);
-		console.log('CSV written to', `../artifacts/${account.accountNumber}.csv`);
+		console.log('Account', _.pick(account, ['accountNumber', 'balance']), 'Transactions', account.txns.length);
 	}
 
-	console.log('Done');
+	const csv = papa.unparse(transactions);
+	fs.mkdirSync('artifacts', {recursive: true});
+	fs.writeFileSync(`artifacts/${companyId}.csv`, csv);
+	console.log('CSV written to', `../artifacts/${companyId}.csv`);
 }
 
 await scrape(CompanyTypes.hapoalim, credentials.hapoalim as ScraperCredentials);
 await scrape(CompanyTypes.visaCal, credentials.visaCal as ScraperCredentials);
+
+console.log('Done');
