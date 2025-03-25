@@ -40,4 +40,5 @@ async function scrape(companyId: CompanyTypes, credentials: ScraperCredentials) 
 	console.log('Done');
 }
 
-await scrape(CompanyTypes.visaCal, credentials.visaCal);
+await scrape(CompanyTypes.hapoalim, credentials.hapoalim as ScraperCredentials);
+await scrape(CompanyTypes.visaCal, credentials.visaCal as ScraperCredentials);
