@@ -9,7 +9,7 @@ import credentials from '../credentials.json';
 async function scrape(companyId: CompanyTypes, credentials: ScraperCredentials) {
 	const scraper = createScraper({
 		companyId,
-		startDate: moment().subtract(2, 'year').toDate(),
+		startDate: moment().subtract(6, 'month').toDate(),
 		executablePath: '/opt/homebrew/bin/chromium',
 		additionalTransactionInformation: true,
 		verbose: true,
