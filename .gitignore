@@ -132,3 +132,8 @@ dist
 # Credentials
 credentials.json
 artifacts
+config.ts
+
+# Actual
+My-Finances-*
+cache
