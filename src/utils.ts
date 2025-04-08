@@ -17,7 +17,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			startDate: moment().subtract(6, 'month').toDate(),
 			executablePath: '/opt/homebrew/bin/chromium',
 			additionalTransactionInformation: true,
-			verbose: true,
+			verbose: false,
 			showBrowser: false,
 		});
 		scraper.onProgress((companyId, payload) => {
@@ -42,22 +42,48 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 		const accounts = await actual.getAccounts() as TransactionEntity[];
 		const account = _.find(accounts, {id: bank.actualAccountId})!;
-		console.log('Account', account);
+		const accountBalance = result.accounts![0].balance!;
+		console.log('Account', account, 'Balance', accountBalance);
 
 		const payees: PayeeEntity[] = await actual.getPayees();
 		const mappedTransactions = transactions.map(async x => ({
 			date: moment(x.date).format('YYYY-MM-DD'),
 			amount: actual.utils.amountToInteger(x.chargedAmount),
-			payee: _.find(payees, {name: x.description})?.id ?? await actual.createPayee({name: x.description}),
+			payee: _.find(payees, {name: x.description})?.id ?? (await actual.createPayee({name: x.description})),
 			imported_payee: x.description,
 			notes: x.status,
 		}));
 
 		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
-		if (importResult.errors) {
+		if (_.isEmpty(importResult)) {
 			console.error('Errors', importResult.errors);
+			throw new Error('Failed to import transactions');
 		} else {
 			console.log('Imported', importResult.added, 'transactions');
+		}
+
+		if (!bank.reconcile) {
+			return;
+		}
+
+		const currentBalance = actual.utils.integerToAmount(await actual.getAccountBalance(bank.actualAccountId));
+		const balanceDiff = accountBalance - currentBalance;
+		if (balanceDiff === 0) {
+			return;
+		}
+
+		console.log('Balance diff', balanceDiff);
+		const reconciliationResult = await actual.importTransactions(bank.actualAccountId, [{
+			date: moment().format('YYYY-MM-DD'),
+			amount: actual.utils.amountToInteger(balanceDiff),
+			payee: null,
+			imported_payee: 'Reconciliation',
+			notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${accountBalance.toLocaleString()}`,
+		}]);
+		if (_.isEmpty(reconciliationResult)) {
+			console.error('Reconciliation errors', reconciliationResult.errors);
+		} else {
+			console.info('Added a reconciliation transaction from', currentBalance, 'to', accountBalance);
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);
