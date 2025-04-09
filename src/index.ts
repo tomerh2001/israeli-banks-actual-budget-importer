@@ -5,7 +5,7 @@ import {type CompanyTypes} from 'israeli-bank-scrapers';
 import _ from 'lodash';
 import actual from '@actual-app/api';
 import Queue from 'p-queue';
-import {config} from '../config.ts';
+import config from '../config.json' assert {type: 'json'};
 import type {ConfigBank} from './config.d.ts';
 import {scrapeAndImportTransactions} from './utils.ts';
 
