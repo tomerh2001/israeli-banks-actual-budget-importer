@@ -12,6 +12,7 @@ This repository provides a simple script to import transactions from Israeli ban
 1. Automatically **creates new Actual accounts** if none exist.
 2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
 3. Configurable via a single JSON file specifying bank credentials, start dates, etc.
+4. Automatically reconcile account balances.
 
 # Logging & Errors
 The script logs each step (connections, scraping, account creation, transaction import results). If any errors occur, they are printed to stderr.
