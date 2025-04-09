@@ -1,12 +1,16 @@
-# Israeli Banks Actual Budget Importer
+# Israeli Banks → Actual Budget
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![XO code style](https://shields.io/badge/code_style-5ed9c7?logo=xo&labelColor=gray)](https://github.com/xojs/xo)
+[![Snyk Security](../../actions/workflows/snyk-security.yml/badge.svg)](../../actions/workflows/snyk-security.yml)
+[![CodeQL](../../actions/workflows/codeql.yml/badge.svg)](../../actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://www.bestpractices.dev/projects/10403/badge)](https://www.bestpractices.dev/projects/10403)
 
-This project automates the process of importing actual budget data from various Israeli banks. It utilizes [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) for scraping bank transactions and [@actual-app/api](https://github.com/actualbudget/actual-app) to integrate these transactions into the Actual budgeting system.
+This project provides an importer from Israeli banks (via [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers)) into [Actual Budget](https://github.com/actualbudget/actual).
 
 ## Table of Contents
 
-- [Israeli Banks Actual Budget Importer](#israeli-banks-actual-budget-importer)
+- [Israeli Banks → Actual Budget](#israeli-banks--actual-budget)
   - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
   - [Features](#features)
   - [Installation](#installation)
     - [Docker](#docker)
@@ -16,6 +20,7 @@ This project automates the process of importing actual budget data from various 
     - [Configuration Structure](#configuration-structure)
   - [Usage](#usage)
   - [Development](#development)
+    - [Overview](#overview)
     - [Project Structure](#project-structure)
     - [TypeScript \& Linting](#typescript--linting)
   - [Testing \& Linting](#testing--linting)
@@ -23,25 +28,17 @@ This project automates the process of importing actual budget data from various 
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
 
-## Overview
-
-The **Israeli Banks Actual Budget Importer** is a Node.js project written in TypeScript designed to:
-
-- **Scrape transactions** using specialized bank scrapers.
-- **Import transactions** into the Actual budgeting system.
-- **Perform account reconciliation** by computing and importing balance differences.
-- **Facilitate scheduled imports** by managing concurrent scraping tasks with a queue.
-
-The main logic is found in `src/index.ts`, which initializes the Actual API, triggers the scraping process, imports transactions, and then gracefully shuts down.
-
 ## Features
 
-- **Multi-Bank Support:** Configurable support for various Israeli banks.
-- **Transaction Scraping:** Uses [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) to obtain recent transaction data.
-- **Budget Integration:** Imports scraped data into the Actual budgeting application using [@actual-app/api](https://github.com/actualbudget/actual-app).
-- **Concurrent Processing:** Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
-- **Reconciliation:** Optional reconciliation to adjust account balances automatically.
-- **Typed Configurations:** Utilizes JSON schemas and TypeScript types to ensure configuration consistency.
+1. **Multi Bank Support**: Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
+
+2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
+
+3. **Automatic Account Creation**: If the bank account does not exist in Actual, it will be created automatically.
+
+4. **Reconciliation:** Optional reconciliation to adjust account balances automatically.
+
+5. **Concurrent Processing:** Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
 
 ## Installation
 
@@ -138,6 +135,18 @@ This command runs the script defined as:
 It initializes the connection to the Actual API, downloads the budget, scrapes bank transactions, imports them, and if enabled, performs reconciliation. After processing all tasks in the queue, the application shuts down cleanly.
 
 ## Development
+
+### Overview
+
+The **Israeli Banks Actual Budget Importer** is a Node.js project written in TypeScript designed to:
+
+- **Scrape transactions** using specialized bank scrapers.
+- **Import transactions** into the Actual budgeting system.
+- **Perform account reconciliation** by computing and importing balance differences.
+- **Facilitate scheduled imports** by managing concurrent scraping tasks with a queue.
+
+The main logic is found in `src/index.ts`, which initializes the Actual API, triggers the scraping process, imports transactions, and then gracefully shuts down.
+
 
 ### Project Structure
 
