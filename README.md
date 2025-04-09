@@ -7,20 +7,15 @@
 
 This repository provides a simple script to import transactions from Israeli banks (via [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers)) into [Actual Budget](https://github.com/actualbudget/actual).
 
+> [!NOTE]  
+> This is still WIP.
+
 # Features
 1. Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
 1. Automatically **creates new Actual accounts** if none exist.
 2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
 3. Configurable via a single JSON file specifying bank credentials, start dates, etc.
 4. Automatically reconcile account balances.
-
-# Logging & Errors
-The script logs each step (connections, scraping, account creation, transaction import results). If any errors occur, they are printed to stderr.
-
-# Common error scenarios
-- Wrong credentials (scraper fails).
-- Actual Budget server is not running or wrong credentials (password).
-- Conflicting or missing environment/config.
 
 # Contributing
 Feel free to open pull requests and issues! Suggestions or improvements are welcome.
