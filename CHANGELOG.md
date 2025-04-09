@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-04-09)
+
+
+### Features
+
+* add imported_id field for transaction importing to prevent duplicates ([bb302fb](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/bb302fbfc898644ae276863407e59fda2319edbd))
+
 # 1.0.0-beta.1 (2025-03-24)
 
 
