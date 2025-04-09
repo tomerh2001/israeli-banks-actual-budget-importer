@@ -133,6 +133,7 @@ dist
 credentials.json
 artifacts
 config.ts
+config.json
 
 # Actual
 My-Finances-*

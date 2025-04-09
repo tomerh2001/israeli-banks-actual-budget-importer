@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 /* eslint-disable import/extensions */
 /* eslint-disable n/file-extension-in-import */
+
 import {createScraper, type ScraperCredentials} from 'israeli-bank-scrapers';
 import _ from 'lodash';
 import moment from 'moment';
@@ -52,6 +52,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			payee: _.find(payees, {name: x.description})?.id ?? (await actual.createPayee({name: x.description})),
 			imported_payee: x.description,
 			notes: x.status,
+			imported_id: `${x.identifier}-${moment(x.date).format('YYYY-MM-DD HH:mm:ss')}`,
 		}));
 
 		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
@@ -79,6 +80,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			payee: null,
 			imported_payee: 'Reconciliation',
 			notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${accountBalance.toLocaleString()}`,
+			imported_id: `reconciliation-${moment().format('YYYY-MM-DD HH:mm:ss')}`,
 		}]);
 		if (_.isEmpty(reconciliationResult)) {
 			console.error('Reconciliation errors', reconciliationResult.errors);

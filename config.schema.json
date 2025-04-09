@@ -1,0 +1,347 @@
+{
+  "$ref": "#/definitions/Config",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Config": {
+      "additionalProperties": false,
+      "properties": {
+        "actual": {
+          "$ref": "#/definitions/ConfigActual"
+        },
+        "banks": {
+          "$ref": "#/definitions/ConfigBanks"
+        }
+      },
+      "required": [
+        "banks",
+        "actual"
+      ],
+      "type": "object"
+    },
+    "ConfigActual": {
+      "additionalProperties": false,
+      "properties": {
+        "budget": {
+          "$ref": "#/definitions/ConfigActualBudget"
+        },
+        "init": {
+          "$ref": "#/definitions/InitConfig"
+        }
+      },
+      "required": [
+        "init",
+        "budget"
+      ],
+      "type": "object"
+    },
+    "ConfigActualBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "syncId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "syncId",
+        "password"
+      ],
+      "type": "object"
+    },
+    "ConfigBank": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            },
+            "userCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "password",
+            "userCode"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            },
+            "username": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "password",
+            "username"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "id",
+            "password"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "num": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "id",
+            "num",
+            "password"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "card6Digits": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "card6Digits",
+            "id",
+            "password"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "nationalID": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            },
+            "username": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "nationalID",
+            "password",
+            "username"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "otpCodeRetriever": {
+              "$comment": "() => Promise<string>"
+            },
+            "password": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "email",
+            "otpCodeRetriever",
+            "password",
+            "phoneNumber"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "actualAccountId": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "otpLongTermToken": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "reconcile": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actualAccountId",
+            "email",
+            "otpLongTermToken",
+            "password"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConfigBanks": {
+      "additionalProperties": false,
+      "properties": {
+        "amex": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "behatsdaa": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "beinleumi": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "beyahadBishvilha": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "discount": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "hapoalim": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "hapoalimBeOnline": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "isracard": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "leumi": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "leumiCard": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "massad": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "max": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "mercantile": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "mizrahi": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "oneZero": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "otsarHahayal": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "pagi": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "union": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "visaCal": {
+          "$ref": "#/definitions/ConfigBank"
+        },
+        "yahav": {
+          "$ref": "#/definitions/ConfigBank"
+        }
+      },
+      "type": "object"
+    },
+    "InitConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "dataDir": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "serverURL": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
