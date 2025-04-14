@@ -19,7 +19,7 @@
     "@types/papaparse": "^5.3.15",
     "bun-types": "latest",
     "papaparse": "^5.5.2",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "xo": "^0.60.0"
   },
   "packageManager": "yarn@4.7.0",
