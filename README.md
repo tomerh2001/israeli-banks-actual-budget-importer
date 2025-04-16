@@ -24,7 +24,7 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 ### Docker
 https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
 #### Example
-```
+```yml
 services:
   importer:
     image: tomerh2001/israeli-banks-actual-budget-importer:latest
