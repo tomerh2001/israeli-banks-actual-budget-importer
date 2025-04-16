@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.1.0...v1.2.0) (2025-04-16)
+
+
+### Features
+
+* Added docker support ([aff5c85](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/aff5c8559f194a44c4c29f8ee1cd24f89fb11f62))
+
 # [1.1.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.0.0...v1.1.0) (2025-04-09)
 
 
