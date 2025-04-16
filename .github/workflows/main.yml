@@ -19,11 +19,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@v2
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
+        cache: 'yarn'
+        cache-dependency-path: 'yarn.lock'
     
     - name: Install Dependencies
-      run: bun i --dev
+      run: yarn install --frozen-lockfile
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     # Authenticate with ghcr.io
     - name: Authenticate with ghcr.io
