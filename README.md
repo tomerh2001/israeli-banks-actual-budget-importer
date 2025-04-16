@@ -43,7 +43,7 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 ## Installation
 
 ### Docker
-Soon.
+https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
 
 ### Prerequisites
 
