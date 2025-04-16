@@ -27,7 +27,7 @@ jobs:
         cache-dependency-path: 'yarn.lock'
     
     - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn install
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
