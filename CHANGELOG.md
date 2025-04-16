@@ -1,6 +1,19 @@
 # [1.2.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.1.0...v1.2.0) (2025-04-16)
 
 
+### Bug Fixes
+
+* replace bunx with yarn for semantic release command ([1c15afa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/1c15afa2f0b4aa2247538ff0273b97639bac9f32))
+* update workflow to use yarn for dependency installation and setup Node environment ([b0e797f](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b0e797fdcbefb6390e85ccecaf598d37d67f9f04))
+
+
+### Features
+
+* Added docker support ([aff5c85](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/aff5c8559f194a44c4c29f8ee1cd24f89fb11f62))
+
+# [1.2.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.1.0...v1.2.0) (2025-04-16)
+
+
 ### Features
 
 * Added docker support ([aff5c85](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/aff5c8559f194a44c4c29f8ee1cd24f89fb11f62))
