@@ -5,6 +5,21 @@
 
 * replace bunx with yarn for semantic release command ([1c15afa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/1c15afa2f0b4aa2247538ff0273b97639bac9f32))
 * specify Node.js version to 21 in workflow ([5f8c3db](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/5f8c3db7b8d055e2d5b11acee3f9b45d5ef621b3))
+* update Docker image tag to use latest version in compose file ([e43a3b1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/e43a3b11e2271818f00f55a985c363c9a2fe4d5f))
+* update workflow to use yarn for dependency installation and setup Node environment ([b0e797f](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b0e797fdcbefb6390e85ccecaf598d37d67f9f04))
+
+
+### Features
+
+* Added docker support ([aff5c85](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/aff5c8559f194a44c4c29f8ee1cd24f89fb11f62))
+
+# [1.2.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.1.0...v1.2.0) (2025-04-16)
+
+
+### Bug Fixes
+
+* replace bunx with yarn for semantic release command ([1c15afa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/1c15afa2f0b4aa2247538ff0273b97639bac9f32))
+* specify Node.js version to 21 in workflow ([5f8c3db](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/5f8c3db7b8d055e2d5b11acee3f9b45d5ef621b3))
 * update workflow to use yarn for dependency installation and setup Node environment ([b0e797f](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b0e797fdcbefb6390e85ccecaf598d37d67f9f04))
 
 
