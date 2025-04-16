@@ -26,14 +26,10 @@ https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
 #### Example
 ```
 services:
-  israeli-banks-actual-budget-importer:
+  importer:
     image: tomerh2001/israeli-banks-actual-budget-importer:latest
-    container_name: israeli-banks-actual-budget-importer
     cap_add:
       - SYS_ADMIN
-    build:
-      context: .
-      dockerfile: Dockerfile
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache # Optional
