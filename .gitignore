@@ -138,3 +138,6 @@ config.json
 # Actual
 My-Finances-*
 cache
+
+# Chrome
+chrome-data

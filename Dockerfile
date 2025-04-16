@@ -1,8 +1,17 @@
-FROM alpine:latest
+# Base stage for common settings
+FROM ghcr.io/puppeteer/puppeteer:latest AS base
+WORKDIR /app
 
-ARG GH_REPO
-ARG RELEASE_NOTES
+# Dependencies stage
+FROM base AS dependencies
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn .yarn
+RUN yarn install
 
-LABEL org.opencontainers.image.source $GH_REPO
+# Builder stage
+FROM dependencies AS builder
+COPY src/ src/
 
-CMD ["echo", "Hello World!"]
+# Final stage for production
+FROM builder AS release
+CMD yarn start
