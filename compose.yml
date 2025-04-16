@@ -1,6 +1,6 @@
 services:
   israeli-banks-actual-budget-importer:
-    image: israeli-banks-actual-budget-importer:dev
+    image: tomerh2001/israeli-banks-actual-budget-importer:latest
     container_name: israeli-banks-actual-budget-importer
     cap_add:
       - SYS_ADMIN

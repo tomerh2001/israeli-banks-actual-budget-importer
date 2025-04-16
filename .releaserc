@@ -13,35 +13,6 @@
         "@semantic-release/npm",
         "@semantic-release/changelog",
         "@semantic-release/git",
-        "@semantic-release/github",
-        [
-            "@codedependant/semantic-release-docker",
-            {
-                "dockerTags": [
-                    "latest",
-                    "{{version}}",
-                    "{{major}}",
-                    "{{major}}.{{minor}}"
-                ],
-                "dockerLogin": false,
-                "dockerRegistry": "ghcr.io",
-                "dockerProject": "tomerh2001",
-                "dockerArgs": {
-                    "GH_REPO": "{{env.GH_REPO}}"
-                }
-            }
-        ],
-        [
-            "@codedependant/semantic-release-docker",
-            {
-                "dockerTags": [
-                    "latest",
-                    "{{version}}",
-                    "{{major}}",
-                    "{{major}}.{{minor}}"
-                ],
-                "dockerProject": "tomerh2001"
-            }
-        ]
+        "@semantic-release/github"
     ]
 }
