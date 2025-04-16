@@ -7,27 +7,6 @@
 
 This project provides an importer from Israeli banks (via [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers)) into [Actual Budget](https://github.com/actualbudget/actual).
 
-## Table of Contents
-
-- [Israeli Banks → Actual Budget](#israeli-banks--actual-budget)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Installation](#installation)
-    - [Docker](#docker)
-    - [Prerequisites](#prerequisites)
-    - [Steps](#steps)
-  - [Configuration](#configuration)
-    - [Configuration Structure](#configuration-structure)
-  - [Usage](#usage)
-  - [Development](#development)
-    - [Overview](#overview)
-    - [Project Structure](#project-structure)
-    - [TypeScript \& Linting](#typescript--linting)
-  - [Testing \& Linting](#testing--linting)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Acknowledgments](#acknowledgments)
-
 ## Features
 
 1. **Multi Bank Support**: Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
@@ -44,6 +23,22 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 
 ### Docker
 https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
+#### Example
+```
+services:
+  israeli-banks-actual-budget-importer:
+    image: tomerh2001/israeli-banks-actual-budget-importer:latest
+    container_name: israeli-banks-actual-budget-importer
+    cap_add:
+      - SYS_ADMIN
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.json:/app/config.json
+      - ./cache:/app/cache # Optional
+      - ./chrome-data:/app/chrome-data # Optional (Can be used to solve 2FA issues like with hapoalim)
+```
 
 ### Prerequisites
 
