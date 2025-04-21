@@ -1120,15 +1120,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ws@npm:~8.5.10":
-  version: 8.5.14
-  resolution: "@types/ws@npm:8.5.14"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10c0/be88a0b6252f939cb83340bd1b4d450287f752c19271195cd97564fd94047259a9bb8c31c585a61b69d8a1b069a99df9dd804db0132d3359c54d3890c501416a
-  languageName: node
-  linkType: hard
-
 "@types/yauzl@npm:^2.9.1":
   version: 2.10.3
   resolution: "@types/yauzl@npm:2.10.3"
@@ -1759,12 +1750,11 @@ __metadata:
   linkType: hard
 
 "bun-types@npm:latest":
-  version: 1.2.6
-  resolution: "bun-types@npm:1.2.6"
+  version: 1.2.10
+  resolution: "bun-types@npm:1.2.10"
   dependencies:
     "@types/node": "npm:*"
-    "@types/ws": "npm:~8.5.10"
-  checksum: 10c0/9feb67bc495381cefadf194d0ff6cc15641f315e707c00f5819f5d03a026754b98476db1851030a421d348358bf0f84870993799c588e1be950ce3968c580a9c
+  checksum: 10c0/e42fd8f0eccbd6c9d5cbdc2ab7bce7a61b0eca68a0243d90a9d86058239d7fb2d68437e051081cd10bbfa4678e59f7e5141e1bd460fbc56d4a55446ee6afc812
   languageName: node
   linkType: hard
 
