@@ -4879,8 +4879,8 @@ __metadata:
   linkType: hard
 
 "israeli-bank-scrapers@npm:^5.4.6":
-  version: 5.4.6
-  resolution: "israeli-bank-scrapers@npm:5.4.6"
+  version: 5.4.7
+  resolution: "israeli-bank-scrapers@npm:5.4.7"
   dependencies:
     build-url: "npm:^2.0.0"
     core-js: "npm:^3.1.4"
@@ -4892,7 +4892,7 @@ __metadata:
     node-fetch: "npm:^2.2.0"
     puppeteer: "npm:22.12.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/ef4377777c6eec1cf5b3e975d17563c8853b5a19242816af4596382fa2853dfc941f66aff37d8ae394ec108f77711ade8875cc065b83480498bfc5c426823863
+  checksum: 10c0/117472a0b5220745a463ef323bd4db6fb095e1657d398e94615c6f5f4f2e7eb910a72cff421bb4d01d959e03989c3bcfabaa798211f8821b4a2cfed32e96daa8
   languageName: node
   linkType: hard
 
