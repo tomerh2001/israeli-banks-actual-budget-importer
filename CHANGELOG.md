@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.2...v1.2.3) (2025-05-12)
+
+
+### Bug Fixes
+
+* add @semantic-release/github plugin to release configuration ([571127a](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/571127a8029ff5783c190bb699f1c19a4c9bcd7b))
+
 ## [1.2.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.1...v1.2.2) (2025-05-12)
 
 
