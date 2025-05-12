@@ -3,6 +3,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable n/file-extension-in-import */
 
+import process from 'node:process';
 import {createScraper, type ScraperCredentials} from 'israeli-bank-scrapers';
 import _ from 'lodash';
 import moment from 'moment';
@@ -18,8 +19,8 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			// ExecutablePath: '/opt/homebrew/bin/chromium',
 			args: ['--user-data-dir=/app/chrome-data'],
 			additionalTransactionInformation: true,
-			verbose: false,
-			showBrowser: false,
+			verbose: process.env?.VERBOSE === 'true',
+			showBrowser: process.env?.SHOW_BROWSER === 'true',
 		});
 		scraper.onProgress((companyId, payload) => {
 			console.debug('Progress', companyId, payload);
