@@ -14,10 +14,7 @@
         "@semantic-release/changelog",
         "@semantic-release/git",
         ["@codedependant/semantic-release-docker", {
-            "dockerBuildQuiet": false,
-            "dockerBuildFlags": {
-                "progress": "plain"
-            }
+            "dockerImage": "tomerh2001/israeli-banks-actual-budget-importer"
         }]
     ]
 }
