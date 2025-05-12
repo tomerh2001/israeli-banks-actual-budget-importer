@@ -13,6 +13,7 @@
         "@semantic-release/npm",
         "@semantic-release/changelog",
         "@semantic-release/git",
+        "@semantic-release/github",
         ["@codedependant/semantic-release-docker", {
             "dockerImage": "tomerh2001/israeli-banks-actual-budget-importer"
         }]
