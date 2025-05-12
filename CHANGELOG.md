@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.4...v1.2.5) (2025-05-12)
+
+
+### Bug Fixes
+
+* import process module and update scraper options for verbosity and browser visibility ([885ff4e](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/885ff4e68d41c0d7b89039da09cd551e37fb1568))
+
 ## [1.2.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.3...v1.2.4) (2025-05-12)
 
 
