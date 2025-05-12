@@ -41,16 +41,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actual-app/api@npm:^25.4.0":
-  version: 25.4.0
-  resolution: "@actual-app/api@npm:25.4.0"
+"@actual-app/api@npm:^25.5.0":
+  version: 25.5.0
+  resolution: "@actual-app/api@npm:25.5.0"
   dependencies:
     "@actual-app/crdt": "npm:^2.1.0"
     better-sqlite3: "npm:^11.9.1"
     compare-versions: "npm:^6.1.1"
     node-fetch: "npm:^3.3.2"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/6dfa1fc02dbfdee881bb25bf219488357965999c4bab1bad643b55ad4f713392be6a3d31b165f903616d20c91e73f1a80d7ddd978fe36e0004798ed9789e8c0a
+  checksum: 10c0/24e550c84ccd7425d1552b06bc7a67adf903c6f62d0288e60e86fd8a0e4fe77031e6a1c709cb174c88ba7424ddca5dffe9cf5fb79449f9069ee78518e10f1326
   languageName: node
   linkType: hard
 
@@ -681,6 +681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/openapi-types@npm:^25.0.0":
+  version: 25.0.0
+  resolution: "@octokit/openapi-types@npm:25.0.0"
+  checksum: 10c0/59c9e5998e08cecec155b776c93d8f6f88ab1a812add61cc65f3de8f3744201565545eac308083d18c9fa330a4381a27bcd771a311ac0348d3590a00f333f233
+  languageName: node
+  linkType: hard
+
 "@octokit/plugin-paginate-rest@npm:^11.0.0":
   version: 11.6.0
   resolution: "@octokit/plugin-paginate-rest@npm:11.6.0"
@@ -689,6 +696,17 @@ __metadata:
   peerDependencies:
     "@octokit/core": ">=6"
   checksum: 10c0/f5c8751a1cd08f972a84d0e0534d1f72c178648c64ec2b57f8d924a04b81cc616338e397fb1400c02d7ffda7b6147835cbdbae07a2673f963217d2d59768daaa
+  languageName: node
+  linkType: hard
+
+"@octokit/plugin-paginate-rest@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "@octokit/plugin-paginate-rest@npm:12.0.0"
+  dependencies:
+    "@octokit/types": "npm:^14.0.0"
+  peerDependencies:
+    "@octokit/core": ">=6"
+  checksum: 10c0/4ed04e8c111ac8cfb0692f917fe09ff6484b7436f0605c661e8051c6fb281c0260c9b067c1422529b948e53b22221b0f7664e2d10a28dcd9db14465c02c7182f
   languageName: node
   linkType: hard
 
@@ -702,6 +720,18 @@ __metadata:
   peerDependencies:
     "@octokit/core": ">=6"
   checksum: 10c0/71ea3672ac2595d080412430057b3317e00566ca7cea0b3bfceaee60a39f533dc9a915b6f5abf6cd23e4ac5ca9a46edfa3f191cf792dbc3af08d873300920385
+  languageName: node
+  linkType: hard
+
+"@octokit/plugin-throttling@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@octokit/plugin-throttling@npm:10.0.0"
+  dependencies:
+    "@octokit/types": "npm:^14.0.0"
+    bottleneck: "npm:^2.15.3"
+  peerDependencies:
+    "@octokit/core": ^6.1.3
+  checksum: 10c0/60294f89bcc03b034fce557dffcb0dba1b02d1fa1834b3b4f542f8635750df4bd23fc143f7c71f802a22a1aaed089c5da77979e6803abe11908b1c91aa1ba419
   languageName: node
   linkType: hard
 
@@ -745,6 +775,15 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": "npm:^24.2.0"
   checksum: 10c0/f66a401b89d653ec28e5c1529abdb7965752db4d9d40fa54c80e900af4c6bf944af6bd0a83f5b4f1eecb72e3d646899dfb27ffcf272ac243552de7e3b97a038d
+  languageName: node
+  linkType: hard
+
+"@octokit/types@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "@octokit/types@npm:14.0.0"
+  dependencies:
+    "@octokit/openapi-types": "npm:^25.0.0"
+  checksum: 10c0/c82da635fe99f265dbef7bf954d45a23ca7ce9c6fc9a8478c247b5435799e5d0eab3ff42f085785ee0882b2de293cab0ab831b379c66f41d00b78412df850ba4
   languageName: node
   linkType: hard
 
@@ -885,7 +924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/github@npm:^11.0.0, @semantic-release/github@npm:^11.0.1":
+"@semantic-release/github@npm:^11.0.0":
   version: 11.0.1
   resolution: "@semantic-release/github@npm:11.0.1"
   dependencies:
@@ -908,6 +947,32 @@ __metadata:
   peerDependencies:
     semantic-release: ">=24.1.0"
   checksum: 10c0/6bcac6f20e6326ddae5085bee1963b5d3fc6571b163e8d31d0485260e51472d2d1a695b6bc4042dcaa1de45c81d0d0c2f82d6cb614abe78af0a6374ef891f76b
+  languageName: node
+  linkType: hard
+
+"@semantic-release/github@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "@semantic-release/github@npm:11.0.2"
+  dependencies:
+    "@octokit/core": "npm:^6.0.0"
+    "@octokit/plugin-paginate-rest": "npm:^12.0.0"
+    "@octokit/plugin-retry": "npm:^7.0.0"
+    "@octokit/plugin-throttling": "npm:^10.0.0"
+    "@semantic-release/error": "npm:^4.0.0"
+    aggregate-error: "npm:^5.0.0"
+    debug: "npm:^4.3.4"
+    dir-glob: "npm:^3.0.1"
+    globby: "npm:^14.0.0"
+    http-proxy-agent: "npm:^7.0.0"
+    https-proxy-agent: "npm:^7.0.0"
+    issue-parser: "npm:^7.0.0"
+    lodash-es: "npm:^4.17.21"
+    mime: "npm:^4.0.0"
+    p-filter: "npm:^4.0.0"
+    url-join: "npm:^5.0.0"
+  peerDependencies:
+    semantic-release: ">=24.1.0"
+  checksum: 10c0/96abd2387196708306386e0055b80540130823cec271d75ee254071d3821b4da3842ee54c78af6b0979a43c905422758c9516bd3bc3f27b482703f1c3581471f
   languageName: node
   linkType: hard
 
@@ -1111,12 +1176,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/papaparse@npm:^5.3.15":
-  version: 5.3.15
-  resolution: "@types/papaparse@npm:5.3.15"
+"@types/papaparse@npm:^5.3.16":
+  version: 5.3.16
+  resolution: "@types/papaparse@npm:5.3.16"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/9333e980b9ed4102f80b1791b6dfefb23fb4d27252b2b6ee6084b2cd847cbe802cfb838d46b4f6b4cb035f9225e0323034c956ee21bbcbcb4cbdb663302d5eeb
+  checksum: 10c0/0009d3dcdc20cd37f171db77307844a575b89435a3398d1437173a1e5feb13a88e61fed7756f264555743a9510693ae1c9e20c4558c066085fd0bd881abf5497
   languageName: node
   linkType: hard
 
@@ -4878,9 +4943,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"israeli-bank-scrapers@npm:^5.4.6":
-  version: 5.4.6
-  resolution: "israeli-bank-scrapers@npm:5.4.6"
+"israeli-bank-scrapers@npm:^5.4.7":
+  version: 5.4.7
+  resolution: "israeli-bank-scrapers@npm:5.4.7"
   dependencies:
     build-url: "npm:^2.0.0"
     core-js: "npm:^3.1.4"
@@ -4892,7 +4957,7 @@ __metadata:
     node-fetch: "npm:^2.2.0"
     puppeteer: "npm:22.12.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/ef4377777c6eec1cf5b3e975d17563c8853b5a19242816af4596382fa2853dfc941f66aff37d8ae394ec108f77711ade8875cc065b83480498bfc5c426823863
+  checksum: 10c0/117472a0b5220745a463ef323bd4db6fb095e1657d398e94615c6f5f4f2e7eb910a72cff421bb4d01d959e03989c3bcfabaa798211f8821b4a2cfed32e96daa8
   languageName: node
   linkType: hard
 
@@ -4900,24 +4965,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "israeli-banks-actual-budget-importer@workspace:."
   dependencies:
-    "@actual-app/api": "npm:^25.4.0"
+    "@actual-app/api": "npm:^25.5.0"
     "@codedependant/semantic-release-docker": "npm:^5.1.0"
     "@semantic-release/changelog": "npm:^6.0.3"
     "@semantic-release/commit-analyzer": "npm:^13.0.1"
     "@semantic-release/git": "npm:^10.0.1"
-    "@semantic-release/github": "npm:^11.0.1"
+    "@semantic-release/github": "npm:^11.0.2"
     "@semantic-release/npm": "npm:^12.0.1"
     "@semantic-release/release-notes-generator": "npm:^14.0.3"
     "@types/lodash": "npm:^4.17.16"
-    "@types/papaparse": "npm:^5.3.15"
+    "@types/papaparse": "npm:^5.3.16"
     bun-types: "npm:latest"
-    israeli-bank-scrapers: "npm:^5.4.6"
+    israeli-bank-scrapers: "npm:^5.4.7"
     lodash: "npm:^4.17.21"
     moment: "npm:^2.30.1"
     p-queue: "npm:^8.1.0"
     papaparse: "npm:^5.5.2"
     semantic-release: "npm:^24.2.3"
-    tsx: "npm:^4.19.3"
+    tsx: "npm:^4.19.4"
     typescript: "npm:^5.8.3"
     xo: "npm:^0.60.0"
   languageName: unknown
@@ -8251,9 +8316,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.19.3":
-  version: 4.19.3
-  resolution: "tsx@npm:4.19.3"
+"tsx@npm:^4.19.4":
+  version: 4.19.4
+  resolution: "tsx@npm:4.19.4"
   dependencies:
     esbuild: "npm:~0.25.0"
     fsevents: "npm:~2.3.3"
@@ -8263,7 +8328,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10c0/cacfb4cf1392ae10e8e4fe032ad26ccb07cd8a3b32e5a0da270d9c48d06ee74f743e4a84686cbc9d89b48032d59bbc56cd911e076f53cebe61dc24fa525ff790
+  checksum: 10c0/f7b8d44362343fbde1f2ecc9832d243a450e1168dd09702a545ebe5f699aa6912e45b431a54b885466db414cceda48e5067b36d182027c43b2c02a4f99d8721e
   languageName: node
   linkType: hard
 

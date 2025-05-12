@@ -13,6 +13,7 @@
         "@semantic-release/npm",
         "@semantic-release/changelog",
         "@semantic-release/git",
-        "@semantic-release/github"
+        "@semantic-release/github",
+        "@codedependant/semantic-release-docker"
     ]
 }
