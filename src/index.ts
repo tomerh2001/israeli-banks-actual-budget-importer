@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-process-exit */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable n/file-extension-in-import */
 
@@ -6,6 +7,7 @@ import {type CompanyTypes} from 'israeli-bank-scrapers';
 import _ from 'lodash';
 import actual from '@actual-app/api';
 import Queue from 'p-queue';
+import moment from 'moment';
 import config from '../config.json' assert {type: 'json'};
 import type {ConfigBank} from './config.d.ts';
 import {scrapeAndImportTransactions} from './utils.ts';
@@ -26,5 +28,7 @@ for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, 
 
 await queue.onIdle();
 await actual.shutdown();
+
 console.log('Done');
-process.exit(0); // eslint-disable-line unicorn/no-process-exit
+
+setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
