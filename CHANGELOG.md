@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.1...v1.2.2) (2025-05-12)
+
+
+### Bug Fixes
+
+* remove dockerBuildQuiet and dockerBuildFlags from semantic-release-docker configuration ([66be0eb](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/66be0ebf1db2a728662e07e70df4991920485b0c))
+
 ## [1.2.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.0...v1.2.1) (2025-05-12)
 
 
