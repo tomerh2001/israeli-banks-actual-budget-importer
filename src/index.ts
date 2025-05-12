@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable n/file-extension-in-import */
 
+import process from 'node:process';
 import {type CompanyTypes} from 'israeli-bank-scrapers';
 import _ from 'lodash';
 import actual from '@actual-app/api';
@@ -26,3 +27,4 @@ for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, 
 await queue.onIdle();
 await actual.shutdown();
 console.log('Done');
+process.exit(0); // eslint-disable-line unicorn/no-process-exit

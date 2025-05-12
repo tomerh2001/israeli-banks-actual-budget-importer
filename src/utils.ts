@@ -15,7 +15,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 		const scraper = createScraper({
 			companyId,
 			startDate: moment().subtract(6, 'month').toDate(),
-			// ExecutablePath: '/opt/homebrew/bin/chromium',
+			executablePath: '/opt/homebrew/bin/chromium',
 			args: ['--user-data-dir=/app/chrome-data'],
 			additionalTransactionInformation: true,
 			verbose: false,
