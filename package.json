@@ -23,7 +23,7 @@
     "typescript": "^5.8.3",
     "xo": "^0.60.0"
   },
-  "packageManager": "yarn@4.7.0",
+  "packageManager": "yarn@4.9.1",
   "dependencies": {
     "@actual-app/api": "^25.5.0",
     "israeli-bank-scrapers": "^5.4.7",
