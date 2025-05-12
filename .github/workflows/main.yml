@@ -32,8 +32,8 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     # Authenticate with ghcr.io
-    - name: Authenticate with ghcr.io
-      run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    # - name: Authenticate with ghcr.io
+    #   run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
     - name: Semantic Release
       run: yarn semantic-release

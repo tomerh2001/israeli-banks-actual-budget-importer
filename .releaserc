@@ -13,7 +13,10 @@
         "@semantic-release/npm",
         "@semantic-release/changelog",
         "@semantic-release/git",
-        "@semantic-release/github",
-        "@codedependant/semantic-release-docker" 
+        ["@codedependant/semantic-release-docker", {
+            "dockerBuildFlags": {
+                "progress": "plain"
+            }
+        }]
     ]
 }
