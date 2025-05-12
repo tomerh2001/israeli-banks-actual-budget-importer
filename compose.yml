@@ -4,9 +4,10 @@ services:
     container_name: israeli-banks-actual-budget-importer
     cap_add:
       - SYS_ADMIN
-    build:
-      context: .
-      dockerfile: Dockerfile
+    platform: linux/amd64
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache
