@@ -14,7 +14,10 @@
         "@semantic-release/changelog",
         "@semantic-release/git",
         ["@codedependant/semantic-release-docker", {
-            "dockerBuildQuiet": false
+            "dockerBuildQuiet": false,
+            "dockerBuildFlags": {
+                "progress": "plain"
+            }
         }]
     ]
 }
