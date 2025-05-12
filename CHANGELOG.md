@@ -7,6 +7,21 @@
 * add newline at end of .releaserc file ([d28f51d](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/d28f51d18b84c868c35ee4681abc5d6f51b2910a))
 * comment out ghcr.io authentication step and update semantic-release-docker plugin configuration ([a5f389c](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a5f389c52649b99f2db0f0b5293144178c968549))
 * correct casing of 'executablePath' in scraper configuration ([b122168](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b1221688ae0f9912b8d51f4a42e2f7ff57349443))
+* remove ghcr.io authentication step from workflow ([421853b](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/421853bbaa03faa67436aa08954ce3b8e1467baa))
+* replace immediate process exit with delayed exit using setTimeout ([9751cea](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/9751cea84c250d0946e0f15106b46904f7cbd23a))
+* update dependencies and add semantic-release-docker plugin ([83257aa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/83257aa2e342accac105d9f38fe854e4942bcec5))
+* update permissions for BuildKit to ensure writable access ([9232656](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/92326568e347c497d5b4cff37ce58adf72189eed))
+* update semantic-release-docker plugin configuration to disable quiet mode ([590b210](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/590b2101b4bb7c21d30fd513b2fac9c05cab8967))
+
+## [1.2.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.0...v1.2.1) (2025-05-12)
+
+
+### Bug Fixes
+
+* add dockerBuildFlags configuration to semantic-release-docker plugin ([49c0b58](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/49c0b58ee7204745b64693da958a248f3bfe8155))
+* add newline at end of .releaserc file ([d28f51d](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/d28f51d18b84c868c35ee4681abc5d6f51b2910a))
+* comment out ghcr.io authentication step and update semantic-release-docker plugin configuration ([a5f389c](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a5f389c52649b99f2db0f0b5293144178c968549))
+* correct casing of 'executablePath' in scraper configuration ([b122168](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b1221688ae0f9912b8d51f4a42e2f7ff57349443))
 * replace immediate process exit with delayed exit using setTimeout ([9751cea](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/9751cea84c250d0946e0f15106b46904f7cbd23a))
 * update dependencies and add semantic-release-docker plugin ([83257aa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/83257aa2e342accac105d9f38fe854e4942bcec5))
 * update semantic-release-docker plugin configuration to disable quiet mode ([590b210](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/590b2101b4bb7c21d30fd513b2fac9c05cab8967))
