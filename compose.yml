@@ -5,9 +5,9 @@ services:
     cap_add:
       - SYS_ADMIN
     platform: linux/amd64
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache
