@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.3...v1.2.4) (2025-05-12)
+
+
+### Bug Fixes
+
+* comment out build configuration in docker-compose and executablePath in utils ([d33865f](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/d33865f503600b3fd7021732bc0fbb1517ab4ee7))
+
 ## [1.2.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.2...v1.2.3) (2025-05-12)
 
 

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "name": "israeli-banks-actual-budget-importer",
   "module": "index.ts",
   "type": "module",
