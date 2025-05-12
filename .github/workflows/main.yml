@@ -32,7 +32,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Make repo writable for BuildKit
-      run: sudo chown -R 1000:1000 $GITHUB_WORKSPACE
+      run: sudo chmod -R 777 $GITHUB_WORKSPACE/.yarn
 
     - name: Semantic Release
       run: yarn semantic-release
