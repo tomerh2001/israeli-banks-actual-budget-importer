@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.0...v1.2.1) (2025-05-12)
+
+
+### Bug Fixes
+
+* correct casing of 'executablePath' in scraper configuration ([b122168](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/b1221688ae0f9912b8d51f4a42e2f7ff57349443))
+* replace immediate process exit with delayed exit using setTimeout ([9751cea](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/9751cea84c250d0946e0f15106b46904f7cbd23a))
+* update dependencies and add semantic-release-docker plugin ([83257aa](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/83257aa2e342accac105d9f38fe854e4942bcec5))
+
 # [1.2.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.1.0...v1.2.0) (2025-04-16)
 
 
