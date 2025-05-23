@@ -1,3 +1,11 @@
+## [1.3.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.3.0...v1.3.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* ensure graceful shutdown with timeout in scheduled run ([49bc74f](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/49bc74f0e631da2f4407bdd0aae9b105f165b134))
+* ensure graceful shutdown with timeout in scheduled run ([ccd946c](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/ccd946c52181a939abd044ce443acafc18319b82))
+
 # [1.3.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.5...v1.3.0) (2025-05-23)
 
 
