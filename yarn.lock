@@ -2258,6 +2258,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cronstrue@npm:^2.61.0":
+  version: 2.61.0
+  resolution: "cronstrue@npm:2.61.0"
+  bin:
+    cronstrue: bin/cli.js
+  checksum: 10c0/4c850b4440da9495359ad14d17e9fec06855f5b9e6871e8527a3ea7206887df944f868784f65bdf3d8ea09b99e69974429d81f88027a6774c1d08c2f5874069b
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
@@ -4966,9 +4975,11 @@ __metadata:
     "@types/lodash": "npm:^4.17.16"
     "@types/papaparse": "npm:^5.3.16"
     bun-types: "npm:latest"
+    cronstrue: "npm:^2.61.0"
     israeli-bank-scrapers: "npm:^5.4.7"
     lodash: "npm:^4.17.21"
     moment: "npm:^2.30.1"
+    node-cron: "npm:^4.0.7"
     p-queue: "npm:^8.1.0"
     papaparse: "npm:^5.5.2"
     semantic-release: "npm:^24.2.3"
@@ -5876,6 +5887,13 @@ __metadata:
   dependencies:
     semver: "npm:^7.3.5"
   checksum: 10c0/a6c83c448d5e8b591f749a0157c9ec02f653021cdf3415c1a44fcb5fc8afc124acad186bc1ec76cb4db2485cc2dcdda187aacd382c54b6e3093ffc0389603643
+  languageName: node
+  linkType: hard
+
+"node-cron@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "node-cron@npm:4.0.7"
+  checksum: 10c0/fceafcda2da4e1c8958c89fec8cd5e6416cf0bfdebb7c9c91c3f6f2df7720b403eaa14f3ab39e311539caad7bd353dda91f3b825934e4f727a3d3f263bbc7965
   languageName: node
   linkType: hard
 

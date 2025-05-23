@@ -30,6 +30,8 @@ services:
     image: tomerh2001/israeli-banks-actual-budget-importer:latest
     cap_add:
       - SYS_ADMIN
+    environment:
+      - SCHEDULE="0 0 * * *" # Optional (Can be used to run the importer periodically)
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache # Optional

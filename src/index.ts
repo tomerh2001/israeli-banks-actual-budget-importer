@@ -8,27 +8,63 @@ import _ from 'lodash';
 import actual from '@actual-app/api';
 import Queue from 'p-queue';
 import moment from 'moment';
+import cron, {type ScheduledTask, validate} from 'node-cron';
+import cronstrue from 'cronstrue';
 import config from '../config.json' assert {type: 'json'};
 import type {ConfigBank} from './config.d.ts';
 import {scrapeAndImportTransactions} from './utils.ts';
 
-const queue = new Queue({
-	concurrency: 10,
-	autoStart: true,
-	interval: 1000,
-	intervalCap: 10,
-});
+let scheduledTask: ScheduledTask;
 
-await actual.init(config.actual.init);
-await actual.downloadBudget(config.actual.budget.syncId, config.actual.budget);
+async function run() {
+	const queue = new Queue({
+		concurrency: 10,
+		autoStart: true,
+		interval: 1000,
+		intervalCap: 10,
+	});
 
-for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, ConfigBank]>) {
-	await queue.add(async () => scrapeAndImportTransactions({companyId, bank}));
+	await actual.init(config.actual.init);
+	await actual.downloadBudget(config.actual.budget.syncId, config.actual.budget);
+
+	for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, ConfigBank]>) {
+		await queue.add(async () => scrapeAndImportTransactions({companyId, bank}));
+	}
+
+	await queue.onIdle();
+	await actual.shutdown();
+
+	console.log('Done');
+
+	setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
 }
 
-await queue.onIdle();
-await actual.shutdown();
+async function safeRun() {
+	try {
+		await run();
+	} catch (error) {
+		console.error('Error running scraper:', error);
+	} finally {
+		if (scheduledTask) {
+			printNextRunTime();
+		}
+	}
+}
 
-console.log('Done');
+function printNextRunTime() {
+	const nextRun = scheduledTask.getNextRun();
+	console.log('Next run:', moment(nextRun).fromNow(), 'at', moment(nextRun).format('YYYY-MM-DD HH:mm:ss'));
+}
 
-setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
+if (process.env?.SCHEDULE) {
+	if (!validate(process.env.SCHEDULE)) {
+		throw new Error(`Invalid cron schedule: ${process.env?.SCHEDULE}`);
+	}
+
+	console.log('Started scheduled run:', process.env?.SCHEDULE, `(${cronstrue.toString(process.env?.SCHEDULE)})`);
+	scheduledTask = cron.schedule(process.env.SCHEDULE, safeRun);
+
+	printNextRunTime();
+} else {
+	await safeRun();
+}
