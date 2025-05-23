@@ -10,7 +10,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - TZ=Asia/Jerusalem
-      - SCHEDULE=* * * * *
+      - SCHEDULE=0 0 * * *
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache

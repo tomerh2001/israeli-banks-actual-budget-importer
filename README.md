@@ -31,11 +31,12 @@ services:
     cap_add:
       - SYS_ADMIN
     environment:
-      - SCHEDULE="0 0 * * *" # Optional (Can be used to run the importer periodically)
+      - TZ=Asia/Jerusalem
+      - SCHEDULE=0 0 * * * # Optional (Used to run periodically - remove to run once)
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache # Optional
-      - ./chrome-data:/app/chrome-data # Optional (Can be used to solve 2FA issues like with hapoalim)
+      - ./chrome-data:/app/chrome-data # Optional (Used to solve 2FA issues like with hapoalim)
 ```
 
 ### Prerequisites
