@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-process-exit */
+
 /* eslint-disable no-await-in-loop */
 /* eslint-disable n/file-extension-in-import */
 
@@ -35,8 +36,6 @@ async function run() {
 	await actual.shutdown();
 
 	console.log('Done');
-
-	setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
 }
 
 async function safeRun() {
@@ -66,5 +65,7 @@ if (process.env?.SCHEDULE) {
 
 	printNextRunTime();
 } else {
-	await safeRun();
+	await safeRun().finally(() => {
+		setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
+	});
 }
