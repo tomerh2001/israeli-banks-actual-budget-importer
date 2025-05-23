@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.5...v1.3.0) (2025-05-23)
+
+
+### Bug Fixes
+
+* update schedule environment variable for periodic imports in docker compose ([82344ef](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/82344ef9d4a4629af884bd8adb87c7cbac87628d))
+
+
+### Features
+
+* add cron scheduling support for periodic imports and update dependencies ([03fc0c3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/03fc0c3cee132ab7c513e0547337e5dcce590914))
+
 ## [1.2.5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.2.4...v1.2.5) (2025-05-12)
 
 
