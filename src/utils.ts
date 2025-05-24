@@ -29,7 +29,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			verbose: process.env?.VERBOSE === 'true',
 			showBrowser: process.env?.SHOW_BROWSER === 'true',
 		});
-		scraper.onProgress((companyId, payload) => {
+		scraper.onProgress((_companyId, payload) => {
 			log(payload.type);
 		});
 
