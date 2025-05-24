@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 /* eslint-disable import/extensions */
 /* eslint-disable n/file-extension-in-import */
 
@@ -9,21 +11,26 @@ import _ from 'lodash';
 import moment from 'moment';
 import actual from '@actual-app/api';
 import {type PayeeEntity, type TransactionEntity} from '@actual-app/api/@types/loot-core/types/models';
+import stdout from 'mute-stdout';
 import {type ScrapeTransactionsContext} from './utils.d';
 
 export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTransactionsContext) {
+	function log(status: any, other?: Record<string, unknown>) {
+		console.debug({bank: companyId, status, ...other});
+	}
+
 	try {
 		const scraper = createScraper({
 			companyId,
 			startDate: moment().subtract(6, 'month').toDate(),
-			// ExecutablePath: '/opt/homebrew/bin/chromium',
-			args: ['--user-data-dir=/app/chrome-data'],
+			executablePath: '/opt/homebrew/bin/chromium',
+			args: ['--user-data-dir=./chrome-data'],
 			additionalTransactionInformation: true,
 			verbose: process.env?.VERBOSE === 'true',
 			showBrowser: process.env?.SHOW_BROWSER === 'true',
 		});
 		scraper.onProgress((companyId, payload) => {
-			console.debug('Progress', companyId, payload);
+			log(payload.type);
 		});
 
 		const result = await scraper.scrape(bank as ScraperCredentials);
@@ -42,11 +49,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			}
 		}
 
-		const accounts = await actual.getAccounts() as TransactionEntity[];
-		const account = _.find(accounts, {id: bank.actualAccountId})!;
 		const accountBalance = result.accounts![0].balance!;
-		console.log('Account', account, 'Balance', accountBalance);
-
 		const payees: PayeeEntity[] = await actual.getPayees();
 		const mappedTransactions = transactions.map(async x => ({
 			date: moment(x.date).format('YYYY-MM-DD'),
@@ -57,12 +60,15 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			imported_id: `${x.identifier}-${moment(x.date).format('YYYY-MM-DD HH:mm:ss')}`,
 		}));
 
+		stdout.mute();
 		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
+		stdout.unmute();
+
 		if (_.isEmpty(importResult)) {
 			console.error('Errors', importResult.errors);
 			throw new Error('Failed to import transactions');
 		} else {
-			console.log('Imported', importResult.added, 'transactions');
+			log('IMPORTED', {transactions: importResult.added.length});
 		}
 
 		if (!bank.reconcile) {
@@ -75,7 +81,9 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			return;
 		}
 
-		console.log('Balance diff', balanceDiff);
+		log('RECONCILIATION', {from: currentBalance, to: accountBalance, diff: balanceDiff});
+
+		stdout.mute();
 		const reconciliationResult = await actual.importTransactions(bank.actualAccountId, [{
 			date: moment().format('YYYY-MM-DD'),
 			amount: actual.utils.amountToInteger(balanceDiff),
@@ -84,13 +92,17 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${accountBalance.toLocaleString()}`,
 			imported_id: `reconciliation-${moment().format('YYYY-MM-DD HH:mm:ss')}`,
 		}]);
+		stdout.unmute();
+
 		if (_.isEmpty(reconciliationResult)) {
 			console.error('Reconciliation errors', reconciliationResult.errors);
 		} else {
-			console.info('Added a reconciliation transaction from', currentBalance, 'to', accountBalance);
+			log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);
+	} finally {
+		log('DONE');
 	}
 }
 

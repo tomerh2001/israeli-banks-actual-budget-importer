@@ -28,6 +28,7 @@ https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
 services:
   importer:
     image: tomerh2001/israeli-banks-actual-budget-importer:latest
+    restart: always
     cap_add:
       - SYS_ADMIN
     environment:
