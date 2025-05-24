@@ -40,27 +40,6 @@ services:
       - ./chrome-data:/app/chrome-data # Optional (Used to solve 2FA issues like with hapoalim)
 ```
 
-### Prerequisites
-
-- **Node.js:** Make sure you have Node.js installed (a version that supports ES modules is recommended).
-- **Yarn:** This project uses Yarn as its package manager. Ensure Yarn is installed.
-- **TypeScript:** Installed via dependencies.
-
-### Steps
-
-1. **Clone the Repository:**
-
-   ```bash
-   git clone https://github.com/tomerh2001/israeli-banks-actual-budget-importer.git
-   cd israeli-banks-actual-budget-importer
-   ```
-
-2. **Install Dependencies:**
-
-   ```bash
-   yarn install
-   ```
-
 ## Configuration
 
 The application configuration is defined using JSON and validated against a schema. The key configuration file is `config.json` and its schema is described in `config.schema.json`.
@@ -112,78 +91,6 @@ Example snippet:
   }
 }
 ```
-
-## Usage
-
-The project comes with scripts configured in the `package.json`. To start the importer:
-
-```bash
-yarn start
-```
-
-This command runs the script defined as:
-
-```json
-"start": "tsx src/index.ts"
-```
-
-It initializes the connection to the Actual API, downloads the budget, scrapes bank transactions, imports them, and if enabled, performs reconciliation. After processing all tasks in the queue, the application shuts down cleanly.
-
-## Development
-
-### Overview
-
-The **Israeli Banks Actual Budget Importer** is a Node.js project written in TypeScript designed to:
-
-- **Scrape transactions** using specialized bank scrapers.
-- **Import transactions** into the Actual budgeting system.
-- **Perform account reconciliation** by computing and importing balance differences.
-- **Facilitate scheduled imports** by managing concurrent scraping tasks with a queue.
-
-The main logic is found in `src/index.ts`, which initializes the Actual API, triggers the scraping process, imports transactions, and then gracefully shuts down.
-
-
-### Project Structure
-
-- **src/**  
-  Contains the TypeScript source code.
-  - `index.ts`: Entry point.
-  - `utils.ts`: Utility functions for scraping and importing transactions.
-  - `config.d.ts`, `utils.d.ts`: Type definitions.
-
-- **config.schema.json:**  
-  JSON schema to validate your configuration file.
-
-- **package.json:**  
-  Lists the dependencies, scripts, and project metadata.
-
-- **.github, .vscode:**  
-  Contain CI/CD and editor-specific settings.
-
-### TypeScript & Linting
-
-The project uses [XO](https://github.com/xojs/xo) for linting. Ensure you follow coding styles as enforced by XO.
-
-## Testing & Linting
-
-Run tests and linting with the following command:
-
-```bash
-yarn test
-```
-
-Ensure that your changes pass linting rules and tests before submitting any pull requests.
-
-## Contributing
-
-Contributions are welcome! To contribute:
-
-1. **Fork the Repository:** Create your own fork and clone it locally.
-2. **Create a New Branch:** Use descriptive branch names (e.g., `feature/new-scraper-support`).
-3. **Commit Your Changes:** Follow the commit message guidelines, especially if you are using semantic release.
-4. **Submit a Pull Request:** Ensure your code passes all tests and linting checks.
-
-Please also review our [CHANGELOG.md](./CHANGELOG.md) and [SECURITY.md](./SECURITY.md) for more context on versioning and security practices.
 
 ## License
 
