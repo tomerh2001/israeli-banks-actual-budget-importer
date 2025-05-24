@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.4.0...v1.5.0) (2025-05-24)
+
+
+### Bug Fixes
+
+* update scraper configuration for executable path and user data directory ([7227ac4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/7227ac40be5c50c2e8bf95e201af1f260478846c))
+
+
+### Features
+
+* improved the logs ([3a5f1ac](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/3a5f1aca53be85413225c9e0e75df29cbd70cf91))
+
 # [1.4.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.3.1...v1.4.0) (2025-05-24)
 
 
