@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable unicorn/no-process-exit */
 
 /* eslint-disable no-await-in-loop */
@@ -11,6 +12,7 @@ import Queue from 'p-queue';
 import moment from 'moment';
 import cron, {type ScheduledTask, validate} from 'node-cron';
 import cronstrue from 'cronstrue';
+import stdout from 'mute-stdout';
 import config from '../config.json' assert {type: 'json'};
 import type {ConfigBank} from './config.d.ts';
 import {scrapeAndImportTransactions} from './utils.ts';
@@ -25,15 +27,20 @@ async function run() {
 		intervalCap: 10,
 	});
 
+	stdout.mute();
 	await actual.init(config.actual.init);
 	await actual.downloadBudget(config.actual.budget.syncId, config.actual.budget);
+	stdout.unmute();
 
 	for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, ConfigBank]>) {
 		await queue.add(async () => scrapeAndImportTransactions({companyId, bank}));
 	}
 
 	await queue.onIdle();
+
+	stdout.mute();
 	await actual.shutdown();
+	stdout.unmute();
 
 	console.log('Done');
 }

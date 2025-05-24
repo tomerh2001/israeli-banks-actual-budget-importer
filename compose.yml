@@ -5,12 +5,13 @@ services:
     cap_add:
       - SYS_ADMIN
     platform: linux/amd64
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
     environment:
       - TZ=Asia/Jerusalem
-      - SCHEDULE=0 0 * * *
+      # - SCHEDULE=0 */6 * * *
     volumes:
       - ./config.json:/app/config.json
       - ./cache:/app/cache
