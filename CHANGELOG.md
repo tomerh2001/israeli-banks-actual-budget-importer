@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.3.1...v1.4.0) (2025-05-24)
+
+
+### Features
+
+* improved the logs ([8ca8c61](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/8ca8c616a394501412262243e98e535a9bace6ad))
+
 ## [1.3.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.3.0...v1.3.1) (2025-05-23)
 
 
