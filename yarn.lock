@@ -84,16 +84,17 @@ __metadata:
   linkType: hard
 
 "@codedependant/semantic-release-docker@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@codedependant/semantic-release-docker@npm:5.1.0"
+  version: 5.1.1
+  resolution: "@codedependant/semantic-release-docker@npm:5.1.1"
   dependencies:
     "@actions/core": "npm:^1.11.1"
     "@semantic-release/error": "npm:^3.0.0"
     debug: "npm:^4.1.1"
     execa: "npm:^4.0.2"
     handlebars: "npm:^4.7.7"
+    object-hash: "npm:^3.0.0"
     semver: "npm:^7.3.2"
-  checksum: 10c0/342fe35631e0247a8148804f97f3511a83b154d1a9993f2eeea9cf6fd7fc84142c62f2db43896ad36c2edefd1f0cae72fa32ca8b97e799f2cb08b26b20def779
+  checksum: 10c0/17359b1c3cfd90531f5e5f59597aed65961ba3cfb509ee98ce71793d8df80702033c03eefab07c9041f09159e025c2ddb6d5782707256e4802923930ef458be7
   languageName: node
   linkType: hard
 
@@ -6474,6 +6475,13 @@ __metadata:
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 10c0/1f4df9945120325d041ccf7b86f31e8bcc14e73d29171e37a7903050e96b81323784ec59f93f102ec635bcf6fa8034ba3ea0a8c7e69fa202b87ae3b6cec5a414
+  languageName: node
+  linkType: hard
+
+"object-hash@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "object-hash@npm:3.0.0"
+  checksum: 10c0/a06844537107b960c1c8b96cd2ac8592a265186bfa0f6ccafe0d34eabdb526f6fa81da1f37c43df7ed13b12a4ae3457a16071603bcd39d8beddb5f08c37b0f47
   languageName: node
   linkType: hard
 
