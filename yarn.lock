@@ -6141,9 +6141,9 @@ __metadata:
   linkType: hard
 
 "node-cron@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "node-cron@npm:4.0.7"
-  checksum: 10c0/fceafcda2da4e1c8958c89fec8cd5e6416cf0bfdebb7c9c91c3f6f2df7720b403eaa14f3ab39e311539caad7bd353dda91f3b825934e4f727a3d3f263bbc7965
+  version: 4.1.0
+  resolution: "node-cron@npm:4.1.0"
+  checksum: 10c0/41aa0a66ac3988ea5dcc4eea7f61c57e2266c8b18bfaee4527145406fe568a300803b37446a45fe45e735571eaed42f6f1c359c8b455a2f20a04d214cc561249
   languageName: node
   linkType: hard
 
