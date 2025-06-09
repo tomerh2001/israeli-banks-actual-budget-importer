@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.1...v1.5.2) (2025-06-09)
+
+
+### Bug Fixes
+
+* bumped israeli-bank-scrapers to v6.1.3 ([15ed7c4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/15ed7c490035837327e69c4372595c918cfea44c))
+
 ## [1.5.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.0...v1.5.1) (2025-05-28)
 
 
