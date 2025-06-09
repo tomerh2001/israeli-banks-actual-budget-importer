@@ -27,7 +27,7 @@
   "dependencies": {
     "@actual-app/api": "^25.5.0",
     "cronstrue": "^2.61.0",
-    "israeli-bank-scrapers": "^6.0.0",
+    "israeli-bank-scrapers": "^6.1.3",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "mute-stdout": "^2.0.0",
