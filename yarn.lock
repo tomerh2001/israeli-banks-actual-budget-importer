@@ -5305,7 +5305,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     moment: "npm:^2.30.1"
     mute-stdout: "npm:^2.0.0"
-    node-cron: "npm:^4.1.0"
+    node-cron: "npm:^4.2.1"
     p-queue: "npm:^8.1.0"
     papaparse: "npm:^5.5.3"
     semantic-release: "npm:^24.2.5"
@@ -6226,10 +6226,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "node-cron@npm:4.1.0"
-  checksum: 10c0/41aa0a66ac3988ea5dcc4eea7f61c57e2266c8b18bfaee4527145406fe568a300803b37446a45fe45e735571eaed42f6f1c359c8b455a2f20a04d214cc561249
+"node-cron@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "node-cron@npm:4.2.1"
+  checksum: 10c0/804df01df230e96fd2f8ffcde004f4d5af953bccdf3ccf993dc450526dd65f553a2f2ad4bc0faf55c90c38cbc99c9ddbb88ee16cba3fc6bc74e606da6efb249e
   languageName: node
   linkType: hard
 
