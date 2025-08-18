@@ -21,7 +21,7 @@
     "papaparse": "^5.5.3",
     "semantic-release": "^24.2.5",
     "typescript": "^5.8.3",
-    "xo": "^1.1.0"
+    "xo": "^1.2.2"
   },
   "packageManager": "yarn@4.9.2",
   "dependencies": {
