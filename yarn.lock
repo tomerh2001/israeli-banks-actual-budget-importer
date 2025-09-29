@@ -2188,11 +2188,13 @@ __metadata:
   linkType: hard
 
 "bun-types@npm:latest":
-  version: 1.2.13
-  resolution: "bun-types@npm:1.2.13"
+  version: 1.2.23
+  resolution: "bun-types@npm:1.2.23"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/b9b339c8c992e89c0ff031d2c14c9df14fd9ff4c3c3b9e970a6a2b212e3d2780f47aaca219fcf57b28782799b14a0cf09726c8ff47bb1c28f4db7442a99cc987
+  peerDependencies:
+    "@types/react": ^19
+  checksum: 10c0/31eb03566d24b897cde45455753eb1ec3936c7dad226a8938900cae558af1f27c30cc647309fc6be9e0d4f355ec8a9026576398ef2b5c602c0b1c50a348bfc79
   languageName: node
   linkType: hard
 
