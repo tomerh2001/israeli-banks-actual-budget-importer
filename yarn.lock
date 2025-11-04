@@ -42,15 +42,15 @@ __metadata:
   linkType: hard
 
 "@actual-app/api@npm:^25.6.1":
-  version: 25.6.1
-  resolution: "@actual-app/api@npm:25.6.1"
+  version: 25.11.0
+  resolution: "@actual-app/api@npm:25.11.0"
   dependencies:
     "@actual-app/crdt": "npm:^2.1.0"
-    better-sqlite3: "npm:^11.10.0"
+    better-sqlite3: "npm:^12.4.1"
     compare-versions: "npm:^6.1.1"
     node-fetch: "npm:^3.3.2"
-    uuid: "npm:^9.0.1"
-  checksum: 10c0/a4fdf371d685dc467e2c4a1aca336239a281686c368db1358810ae52f77d3bbcf5eb56f342ea13443d751544ebad6808f679012def918d0d2b6dab940b9d3483
+    uuid: "npm:^13.0.0"
+  checksum: 10c0/fc1713eaa5af12e6367479e4be701308d5ec6093549ff533e1b34512c6028273cd9c94b6186a43fec13c3516138f1c1c411631192c2c80e25413ffb8b69d8419
   languageName: node
   linkType: hard
 
@@ -2056,14 +2056,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^11.10.0":
-  version: 11.10.0
-  resolution: "better-sqlite3@npm:11.10.0"
+"better-sqlite3@npm:^12.4.1":
+  version: 12.4.1
+  resolution: "better-sqlite3@npm:12.4.1"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 10c0/1fffbf9e5fc9d24847a3ecf09491bceab1c294b46ba41df1c449dc20b6f5c5d9d94ff24becd0b1632ee282bd21278b7fea53a5a6215bb99209ded0ae05eda3b0
+  checksum: 10c0/88773a75d996b4171e5690a38459b05dc814a792701b224bd9909ee084dc0b4c64aaffbdbcf4bbbc6d4e247faf19e91b2a56cf4175d746d3bd9ff14764eb05aa
   languageName: node
   linkType: hard
 
@@ -8965,6 +8965,15 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "uuid@npm:13.0.0"
+  bin:
+    uuid: dist-node/bin/uuid
+  checksum: 10c0/950e4c18d57fef6c69675344f5700a08af21e26b9eff2bf2180427564297368c538ea11ac9fb2e6528b17fc3966a9fd2c5049361b0b63c7d654f3c550c9b3d67
   languageName: node
   linkType: hard
 
