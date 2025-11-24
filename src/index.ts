@@ -2,7 +2,6 @@
 /* eslint-disable unicorn/no-process-exit */
 
 /* eslint-disable no-await-in-loop */
-/* eslint-disable n/file-extension-in-import */
 
 import process from 'node:process';
 import {type CompanyTypes} from 'israeli-bank-scrapers';

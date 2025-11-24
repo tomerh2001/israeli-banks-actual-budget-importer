@@ -2,9 +2,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-/* eslint-disable import/extensions */
-/* eslint-disable n/file-extension-in-import */
-
 import process from 'node:process';
 import {createScraper, type ScraperCredentials} from 'israeli-bank-scrapers';
 import _ from 'lodash';

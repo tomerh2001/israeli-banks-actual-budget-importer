@@ -16,9 +16,7 @@ export type ConfigActualBudget = {
 	password: string;
 };
 
-export type ConfigBanks = Partial<{
-	[key in CompanyTypes]: ConfigBank;
-}>;
+export type ConfigBanks = Partial<Record<CompanyTypes, ConfigBank>>;
 
 export type ConfigBank = ScraperCredentials & {
 	actualAccountId: string;
