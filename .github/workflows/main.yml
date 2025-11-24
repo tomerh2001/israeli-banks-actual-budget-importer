@@ -3,8 +3,8 @@ name: Semantic Versioning
 on:
   push:
     branches:
-      - main 
-      - develop
+    - main
+    - develop
 
 jobs:
   release:
@@ -22,10 +22,10 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: 21
+        node-version: 24
         cache: 'yarn'
         cache-dependency-path: 'yarn.lock'
-    
+
     - name: Install Dependencies
       run: yarn install
       env:
