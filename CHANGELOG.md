@@ -1,3 +1,11 @@
+## [1.5.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.2...v1.5.3) (2025-11-24)
+
+
+### Bug Fixes
+
+* update Node.js version to 24 and adjust file permissions ([a4a2658](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a4a2658537057f4a5a8a4c1888791b94ec987577))
+* Updated packages to latest version ([91c3f6b](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/91c3f6bf57cbbc2a9f17925d13a393ebd9746510))
+
 ## [1.5.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.1...v1.5.2) (2025-06-09)
 
 
