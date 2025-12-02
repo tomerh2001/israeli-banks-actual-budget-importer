@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -74,27 +75,68 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 		const currentBalance = actual.utils.integerToAmount(await actual.getAccountBalance(bank.actualAccountId));
 		const balanceDiff = accountBalance - currentBalance;
+
+		// Use a stable imported_id per account so we can find and update/delete the same
+		// reconciliation transaction instead of creating a new one every run.
+		const reconciliationImportedId = `reconciliation-${bank.actualAccountId}`;
+
+		// Fetch all transactions for this account and look for an existing reconciliation.
+		// Use a wide date range so we always find it if it exists.
+		const allAccountTxns: TransactionEntity[] = await actual.getTransactions(
+			bank.actualAccountId,
+			'2000-01-01',
+			moment().add(1, 'year').format('YYYY-MM-DD'),
+		);
+
+		const existingReconciliation = allAccountTxns.find(txn => txn.imported_id === reconciliationImportedId);
+
+		// If balances are already in sync, remove any existing reconciliation and exit.
 		if (balanceDiff === 0) {
+			if (existingReconciliation) {
+				stdout.mute();
+				await actual.deleteTransaction(existingReconciliation.id);
+				stdout.unmute();
+				log('RECONCILIATION_REMOVED');
+			}
+
 			return;
 		}
 
-		log('RECONCILIATION', {from: currentBalance, to: accountBalance, diff: balanceDiff});
+		log('RECONCILIATION', {
+			from: currentBalance,
+			to: accountBalance,
+			diff: balanceDiff,
+		});
 
-		stdout.mute();
-		const reconciliationResult = await actual.importTransactions(bank.actualAccountId, [{
+		const reconciliationTxn = {
+			account: bank.actualAccountId,
 			date: moment().format('YYYY-MM-DD'),
 			amount: actual.utils.amountToInteger(balanceDiff),
-			payee: null,
+			payee: undefined,
 			imported_payee: 'Reconciliation',
 			notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${accountBalance.toLocaleString()}`,
-			imported_id: `reconciliation-${moment().format('YYYY-MM-DD HH:mm:ss')}`,
-		}]);
-		stdout.unmute();
+			imported_id: reconciliationImportedId,
+		};
 
-		if (_.isEmpty(reconciliationResult)) {
-			console.error('Reconciliation errors', reconciliationResult.errors);
+		stdout.mute();
+		if (existingReconciliation) {
+			// Update the single reconciliation transaction
+			await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
+			stdout.unmute();
+			log('RECONCILIATION_UPDATED', {transactionId: existingReconciliation.id});
 		} else {
-			log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
+			// Create the reconciliation transaction for the first time
+			const reconciliationResult = await actual.importTransactions(
+				bank.actualAccountId,
+				[reconciliationTxn],
+			);
+			stdout.unmute();
+
+			if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
+				console.error('Reconciliation errors', reconciliationResult?.errors);
+			} else {
+				log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
+			}
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);
@@ -102,4 +144,3 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 		log('DONE');
 	}
 }
-
