@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.0...v1.6.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* update transaction notes to use memo instead of status ([1483fdb](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/1483fdbd35c2e23106ab561926df79797c5b09f8))
+
 # [1.6.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.3...v1.6.0) (2025-12-02)
 
 
