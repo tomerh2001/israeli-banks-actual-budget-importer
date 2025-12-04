@@ -107,14 +107,12 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			imported_id: reconciliationImportedId,
 		};
 
-		stdout.mute();
 		if (existingReconciliation) {
-			// Update the single reconciliation transaction
 			stdout.mute();
 			await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
 			stdout.unmute();
-			log('RECONCILIATION_UPDATED', {transactionId: existingReconciliation.id});
 
+			log('RECONCILIATION_UPDATED', {transactionId: existingReconciliation.id});
 			return;
 		}
 
