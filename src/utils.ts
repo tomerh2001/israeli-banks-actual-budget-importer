@@ -97,16 +97,6 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			diff: balanceDiff,
 		});
 
-		// If balances are already in sync, remove any existing reconciliation and exit.
-		if (existingReconciliation && balanceDiff === 0) {
-			stdout.mute();
-			await actual.deleteTransaction(existingReconciliation.id);
-			stdout.unmute();
-			log(`RECONCILIATION_REMOVED, since ${currentBalance.toLocaleString()} === ${accountBalance.toLocaleString()}`, {transactionId: existingReconciliation.id});
-
-			return;
-		}
-
 		const reconciliationTxn = {
 			account: bank.actualAccountId,
 			date: moment().format('YYYY-MM-DD'),
