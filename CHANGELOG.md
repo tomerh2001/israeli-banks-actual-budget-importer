@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.2...v1.7.3) (2025-12-04)
+
+
+### Bug Fixes
+
+* streamline reconciliation transaction handling and improve logging ([46fc2b0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/46fc2b082e4e7b69666bb338960e0b7e6152f892))
+
 ## [1.7.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.1...v1.7.2) (2025-12-04)
 
 
