@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.0...v1.7.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* extend transaction scraping period to 12 months and remove debug logs ([bcfccd8](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/bcfccd8215af67ca1ca714b3677d55ad13c655d6))
+
 # [1.7.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.1...v1.7.0) (2025-12-04)
 
 
