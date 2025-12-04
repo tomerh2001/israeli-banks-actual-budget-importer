@@ -120,22 +120,25 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 		stdout.mute();
 		if (existingReconciliation) {
 			// Update the single reconciliation transaction
+			stdout.mute();
 			await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
 			stdout.unmute();
 			log('RECONCILIATION_UPDATED', {transactionId: existingReconciliation.id});
-		} else {
-			// Create the reconciliation transaction for the first time
-			const reconciliationResult = await actual.importTransactions(
-				bank.actualAccountId,
-				[reconciliationTxn],
-			);
-			stdout.unmute();
 
-			if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
-				console.error('Reconciliation errors', reconciliationResult?.errors);
-			} else {
-				log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
-			}
+			return;
+		}
+
+		// Create the reconciliation transaction for the first time
+		const reconciliationResult = await actual.importTransactions(
+			bank.actualAccountId,
+			[reconciliationTxn],
+		);
+		stdout.unmute();
+
+		if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
+			console.error('Reconciliation errors', reconciliationResult?.errors);
+		} else {
+			log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);
