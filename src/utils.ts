@@ -54,9 +54,12 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			amount: actual.utils.amountToInteger(x.chargedAmount),
 			payee: _.find(payees, {name: x.description})?.id ?? (await actual.createPayee({name: x.description})),
 			imported_payee: x.description,
-			notes: x.status,
+			notes: x.memo,
 			imported_id: `${x.identifier}-${moment(x.date).format('YYYY-MM-DD HH:mm:ss')}`,
 		}));
+
+		// Print first 5 mapped transactions for debugging
+		log('MAPPED_TRANSACTIONS_SAMPLE', {sample: await Promise.all(mappedTransactions.slice(0, 5))});
 
 		stdout.mute();
 		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
