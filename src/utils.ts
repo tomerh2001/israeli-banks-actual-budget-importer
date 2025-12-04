@@ -91,11 +91,11 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 		const existingReconciliation = allAccountTxns.find(txn => txn.imported_id === reconciliationImportedId);
 
-		log('RECONCILIATION', {
-			from: currentBalance,
-			to: accountBalance,
-			diff: balanceDiff,
-		});
+		// If balances are already in sync, no need to create/update reconciliation.
+		if (existingReconciliation && balanceDiff === 0) {
+			log('RECONCILIATION_NOT_NEEDED');
+			return;
+		}
 
 		const reconciliationTxn = {
 			account: bank.actualAccountId,
@@ -112,21 +112,19 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
 			stdout.unmute();
 
-			log('RECONCILIATION_UPDATED', {transactionId: existingReconciliation.id});
+			log('RECONCILIATION_UPDATED', {from: currentBalance, to: accountBalance, diff: balanceDiff});
 			return;
 		}
 
 		// Create the reconciliation transaction for the first time
-		const reconciliationResult = await actual.importTransactions(
-			bank.actualAccountId,
-			[reconciliationTxn],
-		);
+		stdout.mute();
+		const reconciliationResult = await actual.importTransactions(bank.actualAccountId, [reconciliationTxn]);
 		stdout.unmute();
 
 		if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
 			console.error('Reconciliation errors', reconciliationResult?.errors);
 		} else {
-			log('RECONCILIATION_ADDED', {transactions: reconciliationResult.added.length});
+			log('RECONCILIATION_ADDED', {from: currentBalance, to: accountBalance, diff: balanceDiff});
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);
