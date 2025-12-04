@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.5...v1.7.6) (2025-12-04)
+
+
+### Bug Fixes
+
+* update transaction scraping start date to two years ago for improved data accuracy ([a08e3e6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a08e3e699650844ed1015879355bdd9d157e2c60))
+
 ## [1.7.5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.4...v1.7.5) (2025-12-04)
 
 
