@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.3...v1.7.4) (2025-12-04)
+
+
+### Bug Fixes
+
+* remove unnecessary reconciliation removal logic when balances are in sync ([0fcc569](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/0fcc56977394265502dd871bc0973a05e614fffe))
+
 ## [1.7.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.2...v1.7.3) (2025-12-04)
 
 
