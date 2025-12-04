@@ -20,7 +20,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 	try {
 		const scraper = createScraper({
 			companyId,
-			startDate: moment().subtract(6, 'month').toDate(),
+			startDate: moment().subtract(12, 'month').toDate(),
 			// ExecutablePath: '/opt/homebrew/bin/chromium',
 			args: ['--user-data-dir=./chrome-data'],
 			additionalTransactionInformation: true,
@@ -50,9 +50,6 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 		const accountBalance = result.accounts![0].balance!;
 		const payees: PayeeEntity[] = await actual.getPayees();
 
-		// Print first 5 scraped transactions for debugging
-		log('SCRAPED_TRANSACTIONS_SAMPLE', {sample: transactions.slice(0, 5)});
-
 		const mappedTransactions = transactions.map(async x => ({
 			date: moment(x.date).format('YYYY-MM-DD'),
 			amount: actual.utils.amountToInteger(x.chargedAmount),
@@ -61,9 +58,6 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			notes: x.memo,
 			imported_id: `${x.identifier}-${moment(x.date).format('YYYY-MM-DD HH:mm:ss')}`,
 		}));
-
-		// Print first 5 mapped transactions for debugging
-		log('MAPPED_TRANSACTIONS_SAMPLE', {sample: await Promise.all(mappedTransactions.slice(0, 5))});
 
 		stdout.mute();
 		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
