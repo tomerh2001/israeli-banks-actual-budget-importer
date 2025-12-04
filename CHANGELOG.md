@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.1...v1.7.0) (2025-12-04)
+
+
+### Features
+
+* add logging for first 5 scraped transactions ([47dc4e9](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/47dc4e956395edcddc3779fe252bc15b9ce9d3ca))
+
 ## [1.6.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.0...v1.6.1) (2025-12-04)
 
 
