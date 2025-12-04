@@ -20,7 +20,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 	try {
 		const scraper = createScraper({
 			companyId,
-			startDate: moment().subtract(12, 'month').toDate(),
+			startDate: moment().subtract(2, 'years').toDate(),
 			// ExecutablePath: '/opt/homebrew/bin/chromium',
 			args: ['--user-data-dir=./chrome-data'],
 			additionalTransactionInformation: true,
