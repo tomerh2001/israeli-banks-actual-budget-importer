@@ -49,6 +49,10 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 		const accountBalance = result.accounts![0].balance!;
 		const payees: PayeeEntity[] = await actual.getPayees();
+
+		// Print first 5 scraped transactions for debugging
+		log('SCRAPED_TRANSACTIONS_SAMPLE', {sample: transactions.slice(0, 5)});
+
 		const mappedTransactions = transactions.map(async x => ({
 			date: moment(x.date).format('YYYY-MM-DD'),
 			amount: actual.utils.amountToInteger(x.chargedAmount),
