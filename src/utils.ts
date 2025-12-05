@@ -41,12 +41,6 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			.flatMap(account => account.txns)
 			.value();
 
-		for (const account of result.accounts!) {
-			if (account.txns.length <= 0) {
-				continue;
-			}
-		}
-
 		const accountBalance = result.accounts![0].balance!;
 		const payees: PayeeEntity[] = await actual.getPayees();
 
