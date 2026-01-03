@@ -78,7 +78,9 @@ function stableImportedId(companyId: string, accountNumber: string | undefined, 
 
 export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTransactionsContext) {
 	function log(status: any, other?: Record<string, unknown>) {
-		console.debug({bank: companyId, status, ...other});
+		console.debug({
+			datetime: new Date().toISOString(), bank: companyId, status, ...other,
+		});
 	}
 
 	try {
