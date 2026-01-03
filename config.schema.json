@@ -50,83 +50,195 @@
       ],
       "type": "object"
     },
+    "AccountsSelector": {
+      "anyOf": [
+        {
+          "const": "all"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "ConfigBankTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "actualAccountId": {
+          "type": "string"
+        },
+        "reconcile": {
+          "type": "boolean"
+        },
+        "accounts": {
+          "$ref": "#/definitions/AccountsSelector"
+        }
+      },
+      "required": [
+        "actualAccountId"
+      ],
+      "type": "object"
+    },
+    "ConfigBankMappingLegacy": {
+      "type": "object",
+      "properties": {
+        "actualAccountId": {
+          "type": "string"
+        },
+        "reconcile": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "actualAccountId"
+      ]
+    },
+    "ConfigBankMappingTargets": {
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigBankTarget"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "targets"
+      ]
+    },
     "ConfigBank": {
       "anyOf": [
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
+            "userCode": {
               "type": "string"
             },
             "password": {
               "type": "string"
             },
+            "actualAccountId": {
+              "type": "string"
+            },
             "reconcile": {
               "type": "boolean"
             },
-            "userCode": {
-              "type": "string"
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "password",
             "userCode"
           ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "actualAccountId": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "reconcile": {
-              "type": "boolean"
-            },
-            "username": {
-              "type": "string"
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
             }
-          },
-          "required": [
-            "actualAccountId",
-            "password",
-            "username"
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
             "actualAccountId": {
               "type": "string"
             },
+            "reconcile": {
+              "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "password",
+            "username"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
             "id": {
               "type": "string"
             },
             "password": {
               "type": "string"
             },
+            "actualAccountId": {
+              "type": "string"
+            },
             "reconcile": {
               "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "id",
             "password"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
-              "type": "string"
-            },
             "id": {
               "type": "string"
             },
@@ -136,109 +248,181 @@
             "password": {
               "type": "string"
             },
+            "actualAccountId": {
+              "type": "string"
+            },
             "reconcile": {
               "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "id",
             "num",
             "password"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
+            "id": {
               "type": "string"
             },
             "card6Digits": {
               "type": "string"
             },
-            "id": {
+            "password": {
               "type": "string"
             },
-            "password": {
+            "actualAccountId": {
               "type": "string"
             },
             "reconcile": {
               "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
-            "card6Digits",
             "id",
+            "card6Digits",
             "password"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
-              "type": "string"
-            },
             "nationalID": {
               "type": "string"
             },
+            "username": {
+              "type": "string"
+            },
             "password": {
+              "type": "string"
+            },
+            "actualAccountId": {
               "type": "string"
             },
             "reconcile": {
               "type": "boolean"
             },
-            "username": {
-              "type": "string"
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "nationalID",
-            "password",
-            "username"
+            "username",
+            "password"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
-              "type": "string"
-            },
             "email": {
-              "type": "string"
-            },
-            "otpCodeRetriever": {
-              "$comment": "() => Promise<string>"
-            },
-            "password": {
               "type": "string"
             },
             "phoneNumber": {
               "type": "string"
             },
+            "password": {
+              "type": "string"
+            },
+            "otpCodeRetriever": {
+              "$comment": "() => Promise<string>"
+            },
+            "actualAccountId": {
+              "type": "string"
+            },
             "reconcile": {
               "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "email",
             "otpCodeRetriever",
             "password",
             "phoneNumber"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "actualAccountId": {
-              "type": "string"
-            },
             "email": {
               "type": "string"
             },
@@ -248,15 +432,36 @@
             "password": {
               "type": "string"
             },
+            "actualAccountId": {
+              "type": "string"
+            },
             "reconcile": {
               "type": "boolean"
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigBankTarget"
+              },
+              "minItems": 1
             }
           },
           "required": [
-            "actualAccountId",
             "email",
             "otpLongTermToken",
             "password"
+          ],
+          "allOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConfigBankMappingLegacy"
+                },
+                {
+                  "$ref": "#/definitions/ConfigBankMappingTargets"
+                }
+              ]
+            }
           ],
           "type": "object"
         }
