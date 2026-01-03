@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.1...v1.9.0) (2026-01-03)
+
+
+### Features
+
+* added support for bank hapoalim investment accounts ([f1017d8](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/f1017d8b9eae21c8a99d92389e6bd3b49f1cf7aa))
+
 ## [1.8.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.0...v1.8.1) (2026-01-03)
 
 
