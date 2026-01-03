@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.6...v1.8.0) (2026-01-03)
+
+
+### Features
+
+* **config:** add targets/accounts mapping and update reconciliation docs ([9f56fe0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/9f56fe0fa984304186af4c95175a2e3ceb6b83b8))
+
 ## [1.7.6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.5...v1.7.6) (2025-12-04)
 
 
