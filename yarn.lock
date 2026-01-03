@@ -1273,8 +1273,8 @@ __metadata:
   linkType: hard
 
 "@tomerh2001/israeli-bank-scrapers@npm:latest":
-  version: 6.3.11
-  resolution: "@tomerh2001/israeli-bank-scrapers@npm:6.3.11"
+  version: 6.4.0
+  resolution: "@tomerh2001/israeli-bank-scrapers@npm:6.4.0"
   dependencies:
     core-js: "npm:^3.1.4"
     debug: "npm:^4.3.2"
@@ -1285,7 +1285,7 @@ __metadata:
     puppeteer: "npm:22.15.0"
     utility-types: "npm:^3.11.0"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/1d63f5d81af443374873ded8ef16ff62540816ada4762d8ce9bc91f8b2abe7d3b6250bba0cccae7c0a4d0eca25d81ae4ffe4a9106dbc1387ff44a1d90d279c31
+  checksum: 10c0/ef626a3f5e5c257b58e04124c5b58d725dcd10ef4a1a6ec2ab11ce5ec0d86315e2b40a1a29e65efd9d8ca517597d0a39442922da7db59a1f9a4f1e4104d6f9f5
   languageName: node
   linkType: hard
 
