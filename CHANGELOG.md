@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.0...v1.8.1) (2026-01-03)
+
+
+### Bug Fixes
+
+* **logging:** add timestamp to debug logs in scrapeAndImportTransactions ([79a8f53](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/79a8f53726e63fd72234a1a4066ce9e151397fb1))
+
 # [1.8.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.6...v1.8.0) (2026-01-03)
 
 
