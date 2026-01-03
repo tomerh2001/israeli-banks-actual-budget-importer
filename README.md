@@ -17,7 +17,9 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 
 4. **Reconciliation:** Optional reconciliation to adjust account balances automatically.
 
-5. **Concurrent Processing:** Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
+5. **Credit Card / Multi-Account Mapping (Targets):** Supports mapping multiple scraped accounts/cards into one Actual account, or mapping each scraped card into its own Actual account (via `targets` and `accounts`).
+
+6. **Concurrent Processing:** Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
 
 ## Installation
 
@@ -42,25 +44,176 @@ services:
 
 ## Configuration
 
-The application configuration is defined using JSON and validated against a schema. The key configuration file is `config.json` and its schema is described in `config.schema.json`.
+The application configuration is defined using JSON and validated against a schema.
+The main configuration file is `config.json`.
 
-### Configuration Structure
+The configuration has **two independent top-level sections**:
+1. `actual`: Configures the Actual Budget connection.
+2. `banks`: Configures bank scrapers and account mappings.
 
-- **actual:**  
-  Contains settings for the Actual API integration:
-  - `init`: Initialization parameters (e.g., server URL, password).
-  - `budget`: Contains properties like `syncId` and `password` for synchronizing budgets.
+---
 
-- **banks:**  
-  Defines bank-specific settings for each supported bank. Each entry typically requires:
-  - `actualAccountId`: The account identifier in Actual.
-  - `password`: The bank account password.
-  - Additional properties (e.g., `userCode`, `username`, or other bank-specific credentials) as required.
-  - `reconcile` (optional): A flag to enable balance reconciliation.
+### 1) `actual` configuration
 
-Make sure your `config.json` follows the schema defined in `config.schema.json`.
+This section configures the connection to your Actual Budget server and budget.
+It is **always required**, regardless of how you configure banks or targets.
 
-Example snippet:
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  }
+}
+```
+
+Nothing in this block changes when using `targets`, credit cards, or multi-account mappings.
+
+---
+
+### 2) `banks` configuration
+
+The `banks` section defines:
+- Which banks to scrape
+- The credentials for each bank
+- How scraped accounts/cards are mapped into Actual accounts
+
+Each bank entry includes the credentials required by `israeli-bank-scrapers`
+(e.g. `userCode`, `username`, `password`, etc.) and supports **multiple mapping modes**.
+
+#### Using `targets` (recommended)
+
+A single bank scrape (for example `visaCal`) may return **multiple accounts/cards**.
+Different users model these differently in Actual, so the importer supports `targets`.
+
+Each **target** represents:
+- One Actual account
+- One or more scraped accounts/cards that feed into it
+
+For each target:
+- Imported transactions = concatenation of transactions from selected cards
+- Reconciliation (if enabled) = sum of balances of selected cards
+  (only cards with a valid numeric balance are included)
+
+---
+
+#### Example A: One Actual account for all VisaCal cards (consolidated)
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-creditcards-all",
+          "reconcile": true,
+          "accounts": "all"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+#### Example B: One Actual account per VisaCal card (separate accounts)
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-card-8538",
+          "reconcile": true,
+          "accounts": ["8538"]
+        },
+        {
+          "actualAccountId": "actual-card-7697",
+          "reconcile": true,
+          "accounts": ["7697"]
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+#### Example C: Grouped cards into a single Actual account (subset)
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-cal-primary",
+          "reconcile": true,
+          "accounts": ["8538", "7697"]
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## Legacy configuration (single Actual account per bank)
+
+This configuration style is **fully supported for backward compatibility**,
+but does **not** allow fine-grained control over multiple cards/accounts.
+
+It maps all scraped accounts from the bank into a single Actual account.
 
 ```json
 {
@@ -87,10 +240,18 @@ Example snippet:
       "username": "bank_username",
       "password": "bank_password"
     }
-    // Additional bank configurations go here...
   }
 }
 ```
+
+---
+
+## Notes
+
+- The `actual` block is **always required** and independent of bank configuration.
+- `targets` are optional but strongly recommended for credit-card providers.
+- Duplicate transactions are prevented using a stable `imported_id`.
+- Credit card balances are often negative; reconciliation uses the values as returned by the bank.
 
 ## License
 

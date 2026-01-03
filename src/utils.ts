@@ -4,13 +4,77 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import process from 'node:process';
-import {createScraper, type ScraperCredentials} from 'israeli-bank-scrapers';
+import {createScraper, type ScraperCredentials} from '@tomerh2001/israeli-bank-scrapers';
 import _ from 'lodash';
 import moment from 'moment';
 import actual from '@actual-app/api';
-import {type PayeeEntity, type TransactionEntity} from '@actual-app/api/@types/loot-core/types/models';
+import {type PayeeEntity, type TransactionEntity} from '@actual-app/api/@types/loot-core/src/types/models';
 import stdout from 'mute-stdout';
 import {type ScrapeTransactionsContext} from './utils.d';
+
+// If you exported these from your config types file, import them from there instead.
+type AccountsSelector = 'all' | string[];
+type BankTarget = {
+	actualAccountId: string;
+	reconcile?: boolean;
+	accounts?: AccountsSelector;
+};
+
+function isFiniteNumber(x: unknown): x is number {
+	return typeof x === 'number' && Number.isFinite(x);
+}
+
+function stripUndefined<T extends Record<string, any>>(object: T): T {
+	return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined)) as T;
+}
+
+function normalizeTargets(bank: any): BankTarget[] {
+	// New config: targets[]
+	if (Array.isArray(bank?.targets) && bank.targets.length > 0) {
+		return bank.targets
+			.filter((t: any) => t?.actualAccountId)
+			.map((t: any) => ({
+				actualAccountId: t.actualAccountId,
+				reconcile: Boolean(t.reconcile),
+				accounts: t.accounts,
+			}));
+	}
+
+	// Legacy config: actualAccountId + reconcile
+	if (bank?.actualAccountId) {
+		return [{
+			actualAccountId: bank.actualAccountId,
+			reconcile: Boolean(bank.reconcile),
+			// Legacy behavior did not support selecting accounts; treat as "all".
+			accounts: 'all',
+		}];
+	}
+
+	return [];
+}
+
+function selectScraperAccounts(
+	allAccounts: any[] | undefined,
+	selector: AccountsSelector | undefined,
+) {
+	const accounts = allAccounts ?? [];
+	if (selector === undefined || selector === 'all') {
+		return accounts;
+	}
+
+	const set = new Set(selector);
+	return accounts.filter(a => set.has(String(a.accountNumber)));
+}
+
+function stableImportedId(companyId: string, accountNumber: string | undefined, txn: any) {
+	// Prefer scraper identifier if present; fall back to a deterministic composite.
+	const idPart
+		= txn?.identifier
+			?? `${moment(txn?.date).format('YYYY-MM-DD')}:${txn?.chargedAmount}:${txn?.description ?? ''}:${txn?.memo ?? ''}`;
+
+	// AccountNumber is important once multiple cards are aggregated into one Actual account.
+	return `${companyId}:${accountNumber ?? 'unknown'}:${idPart}`;
+}
 
 export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTransactionsContext) {
 	function log(status: any, other?: Record<string, unknown>) {
@@ -18,6 +82,11 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 	}
 
 	try {
+		const targets = normalizeTargets(bank);
+		if (targets.length === 0) {
+			throw new Error(`No targets configured for ${companyId}. Provide bank.actualAccountId (legacy) or bank.targets[].actualAccountId.`);
+		}
+
 		const scraper = createScraper({
 			companyId,
 			startDate: moment().subtract(2, 'years').toDate(),
@@ -27,6 +96,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			verbose: process.env?.VERBOSE === 'true',
 			showBrowser: process.env?.SHOW_BROWSER === 'true',
 		});
+
 		scraper.onProgress((_companyId, payload) => {
 			log(payload.type);
 		});
@@ -36,89 +106,136 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			throw new Error(`Failed to scrape (${result.errorType}): ${result.errorMessage}`);
 		}
 
-		const transactions = _(result.accounts)
-			.filter(account => account.txns.length > 0)
-			.flatMap(account => account.txns)
-			.value();
+		log('ACCOUNTS', {
+			accounts: result.accounts?.map(x => ({
+				accountNumber: x.accountNumber,
+				balance: x.balance,
+				txns: x.txns.length,
+			})),
+		});
 
-		const accountBalance = result.accounts![0].balance!;
 		const payees: PayeeEntity[] = await actual.getPayees();
 
-		const mappedTransactions = transactions.map(async x => ({
-			date: moment(x.date).format('YYYY-MM-DD'),
-			amount: actual.utils.amountToInteger(x.chargedAmount),
-			payee: _.find(payees, {name: x.description})?.id ?? (await actual.createPayee({name: x.description})),
-			imported_payee: x.description,
-			notes: x.memo,
-			imported_id: `${x.identifier}-${moment(x.date).format('YYYY-MM-DD HH:mm:ss')}`,
-		}));
+		// Process each target independently (supports per-card, per-company, and consolidated).
+		for (const target of targets) {
+			const selectedAccounts = selectScraperAccounts(result.accounts as any[], target.accounts);
 
-		stdout.mute();
-		const importResult = await actual.importTransactions(bank.actualAccountId, await Promise.all(mappedTransactions), {defaultCleared: true});
-		stdout.unmute();
+			// Transactions to import: selected accounts with txns.
+			const transactions = _(selectedAccounts)
+				.filter(a => Array.isArray(a.txns) && a.txns.length > 0)
+				.flatMap(a => a.txns.map((t: any) => ({txn: t, accountNumber: String(a.accountNumber)})))
+				.value();
 
-		if (_.isEmpty(importResult)) {
-			console.error('Errors', importResult.errors);
-			throw new Error('Failed to import transactions');
-		} else {
-			log('IMPORTED', {transactions: importResult.added.length});
-		}
+			if (transactions.length === 0) {
+				log('NO_TRANSACTIONS', {actualAccountId: target.actualAccountId});
+			} else {
+				const mappedTransactions = transactions.map(async ({txn, accountNumber}) => stripUndefined({
+					date: moment(txn.date).format('YYYY-MM-DD'),
+					amount: actual.utils.amountToInteger(txn.chargedAmount),
+					payee: _.find(payees, {name: txn.description})?.id ?? (await actual.createPayee({name: txn.description})),
+					imported_payee: txn.description,
+					notes: txn.memo,
+					imported_id: stableImportedId(companyId, accountNumber, txn),
+				}));
 
-		if (!bank.reconcile) {
-			return;
-		}
+				stdout.mute();
+				const importResult = await actual.importTransactions(
+					target.actualAccountId,
+					await Promise.all(mappedTransactions),
+					{defaultCleared: true},
+				);
+				stdout.unmute();
 
-		const currentBalance = actual.utils.integerToAmount(await actual.getAccountBalance(bank.actualAccountId));
-		const balanceDiff = accountBalance - currentBalance;
+				if (_.isEmpty(importResult)) {
+					console.error('Errors', importResult.errors);
+					throw new Error('Failed to import transactions');
+				} else {
+					log('IMPORTED', {actualAccountId: target.actualAccountId, transactions: importResult.added.length});
+				}
+			}
 
-		// Use a stable imported_id per account so we can find and update/delete the same
-		// reconciliation transaction instead of creating a new one every run.
-		const reconciliationImportedId = `reconciliation-${bank.actualAccountId}`;
+			if (!target.reconcile) {
+				continue;
+			}
 
-		// Fetch all transactions for this account and look for an existing reconciliation.
-		// Use a wide date range so we always find it if it exists.
-		const allAccountTxns: TransactionEntity[] = await actual.getTransactions(
-			bank.actualAccountId,
-			'2000-01-01',
-			moment().add(1, 'year').format('YYYY-MM-DD'),
-		);
+			// Reconciliation balance: sum finite balances of selected accounts.
+			const reconAccounts = selectedAccounts
+				.filter(a => isFiniteNumber(a?.balance))
+				.map(a => ({accountNumber: String(a.accountNumber), balance: a.balance as number}));
 
-		const existingReconciliation = allAccountTxns.find(txn => txn.imported_id === reconciliationImportedId);
+			if (reconAccounts.length === 0) {
+				log('RECONCILE_SKIPPED_NO_BALANCES', {
+					actualAccountId: target.actualAccountId,
+					selectedAccounts: selectedAccounts.map(a => a?.accountNumber),
+				});
+				continue;
+			}
 
-		// If balances are already in sync, no need to create/update reconciliation.
-		if (existingReconciliation && balanceDiff === 0) {
-			log('RECONCILIATION_NOT_NEEDED');
-			return;
-		}
+			const scraperBalance = reconAccounts.reduce((sum, a) => sum + a.balance, 0);
 
-		const reconciliationTxn = {
-			account: bank.actualAccountId,
-			date: moment().format('YYYY-MM-DD'),
-			amount: actual.utils.amountToInteger(balanceDiff),
-			payee: undefined,
-			imported_payee: 'Reconciliation',
-			notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${accountBalance.toLocaleString()}`,
-			imported_id: reconciliationImportedId,
-		};
+			log('RECONCILE_INPUT', {
+				actualAccountId: target.actualAccountId,
+				accounts: reconAccounts,
+				balance: scraperBalance,
+			});
 
-		if (existingReconciliation) {
+			const currentBalance = actual.utils.integerToAmount(await actual.getAccountBalance(target.actualAccountId));
+			const balanceDiff = scraperBalance - currentBalance;
+
+			// Stable imported_id per Actual account so we update the same reconciliation txn each run.
+			const reconciliationImportedId = `reconciliation-${target.actualAccountId}`;
+
+			const allAccountTxns: TransactionEntity[] = await actual.getTransactions(
+				target.actualAccountId,
+				'2000-01-01',
+				moment().add(1, 'year').format('YYYY-MM-DD'),
+			);
+
+			const existingReconciliation = allAccountTxns.find(txn => txn.imported_id === reconciliationImportedId);
+
+			if (existingReconciliation && balanceDiff === 0) {
+				log('RECONCILIATION_NOT_NEEDED', {actualAccountId: target.actualAccountId});
+				continue;
+			}
+
+			const reconciliationTxn = stripUndefined({
+				account: target.actualAccountId,
+				date: moment().format('YYYY-MM-DD'),
+				amount: actual.utils.amountToInteger(balanceDiff),
+				payee: null, // IMPORTANT: never pass undefined to updateTransaction schema
+				imported_payee: 'Reconciliation',
+				notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${scraperBalance.toLocaleString()}`,
+				imported_id: reconciliationImportedId,
+			});
+
+			if (existingReconciliation) {
+				stdout.mute();
+				await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
+				stdout.unmute();
+
+				log('RECONCILIATION_UPDATED', {
+					actualAccountId: target.actualAccountId,
+					from: currentBalance,
+					to: scraperBalance,
+					diff: balanceDiff,
+				});
+				continue;
+			}
+
 			stdout.mute();
-			await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
+			const reconciliationResult = await actual.importTransactions(target.actualAccountId, [reconciliationTxn]);
 			stdout.unmute();
 
-			log('RECONCILIATION_UPDATED', {from: currentBalance, to: accountBalance, diff: balanceDiff});
-			return;
-		}
-
-		// Create the reconciliation transaction for the first time
-		stdout.mute();
-		const reconciliationResult = await actual.importTransactions(bank.actualAccountId, [reconciliationTxn]);
-		stdout.unmute();
-
-		if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
-			console.error('Reconciliation errors', reconciliationResult?.errors);
-		} else {
-			log('RECONCILIATION_ADDED', {from: currentBalance, to: accountBalance, diff: balanceDiff});
+			if (!reconciliationResult || _.isEmpty(reconciliationResult.added)) {
+				console.error('Reconciliation errors', reconciliationResult?.errors);
+			} else {
+				log('RECONCILIATION_ADDED', {
+					actualAccountId: target.actualAccountId,
+					from: currentBalance,
+					to: scraperBalance,
+					diff: balanceDiff,
+				});
+			}
 		}
 	} catch (error) {
 		console.error('Error', companyId, error);

@@ -16,7 +16,7 @@
     "@semantic-release/npm": "^13.1.2",
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/lodash": "^4.17.21",
-    "@types/papaparse": "^5.5.0",
+    "@types/papaparse": "^5.5.2",
     "bun-types": "latest",
     "papaparse": "^5.5.3",
     "semantic-release": "^25.0.2",
@@ -26,13 +26,13 @@
   "packageManager": "yarn@4.12.0",
   "dependencies": {
     "@actual-app/api": "^25.12.0",
+    "@tomerh2001/israeli-bank-scrapers": "latest",
     "cronstrue": "^3.9.0",
-    "israeli-bank-scrapers": "^6.2.5",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "mute-stdout": "^2.0.0",
     "node-cron": "^4.2.1",
     "p-queue": "^9.0.1",
-    "tsx": "^4.20.6"
+    "tsx": "^4.21.0"
   }
 }

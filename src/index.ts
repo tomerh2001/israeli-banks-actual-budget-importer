@@ -4,7 +4,7 @@
 /* eslint-disable no-await-in-loop */
 
 import process from 'node:process';
-import {type CompanyTypes} from 'israeli-bank-scrapers';
+import {type CompanyTypes} from '@tomerh2001/israeli-bank-scrapers';
 import _ from 'lodash';
 import actual from '@actual-app/api';
 import Queue from 'p-queue';
