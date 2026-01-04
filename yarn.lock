@@ -77,16 +77,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actual-app/api@npm:^25.12.0":
-  version: 25.12.0
-  resolution: "@actual-app/api@npm:25.12.0"
+"@actual-app/api@npm:^26.1.0":
+  version: 26.1.0
+  resolution: "@actual-app/api@npm:26.1.0"
   dependencies:
     "@actual-app/crdt": "npm:^2.1.0"
     better-sqlite3: "npm:^12.4.1"
     compare-versions: "npm:^6.1.1"
     node-fetch: "npm:^3.3.2"
     uuid: "npm:^13.0.0"
-  checksum: 10c0/577321f107d719155c26191747290b3566fa6d623494624c37563b2259021299c5d40a9f25a0486aebe2c057d2d32ad4d250d39795826de6eb432084b58ba687
+  checksum: 10c0/89719bda5c402781b12947d2d9fef59a02bfbe8eed8b9a55e9e0d214c4d2dec793d2b323203a06ee2cff4c46b8e10c3c906f5703f7c33c21eda28ab7da6031e2
   languageName: node
   linkType: hard
 
@@ -5121,7 +5121,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "israeli-banks-actual-budget-importer@workspace:."
   dependencies:
-    "@actual-app/api": "npm:^25.12.0"
+    "@actual-app/api": "npm:^26.1.0"
     "@codedependant/semantic-release-docker": "npm:^5.1.1"
     "@semantic-release/changelog": "npm:^6.0.3"
     "@semantic-release/commit-analyzer": "npm:^13.0.1"

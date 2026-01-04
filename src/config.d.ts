@@ -17,6 +17,8 @@ export type ConfigActualBudget = {
 };
 
 export type ConfigBanks = Partial<Record<CompanyTypes, ConfigBank>>;
+export type AccountsSelector = string[] | 'all';
+export type ReconcileSelector = boolean | 'consolidate';
 
 /**
  * A single "import target" inside Actual.
@@ -30,8 +32,11 @@ export type ConfigBankTarget = {
 
 	/**
 	 * If true, create/update a reconciliation transaction to match the scraped balance.
+	 * If 'consolidate', reconcile once per Actual account using the consolidated balance
+	 * across all selected scraped accounts.
+	 * If false/undefined, do not reconcile.
 	 */
-	reconcile?: boolean;
+	reconcile?: ReconcileSelector;
 
 	/**
 	 * Which scraped accounts (by accountNumber) should be included in this target.
@@ -42,7 +47,7 @@ export type ConfigBankTarget = {
 	 * - treat as "all" for import, and for reconciliation use the first usable balance
 	 *   (you'll refine this in the implementation files).
 	 */
-	accounts?: 'all' | string[];
+	accounts?: AccountsSelector;
 };
 
 /**
@@ -61,5 +66,5 @@ export type ConfigBank = ScraperCredentials & {
 	 * If targets is provided, these should be ignored by runtime logic.
 	 */
 	actualAccountId?: string;
-	reconcile?: boolean;
+	reconcile?: ReconcileSelector;
 };

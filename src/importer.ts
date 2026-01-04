@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable no-await-in-loop */
+// Importer.ts
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,101 +11,18 @@ import {createScraper, type ScraperCredentials} from '@tomerh2001/israeli-bank-s
 import _ from 'lodash';
 import moment from 'moment';
 import actual from '@actual-app/api';
-import {type PayeeEntity, type TransactionEntity} from '@actual-app/api/@types/loot-core/src/types/models';
+import {type PayeeEntity} from '@actual-app/api/@types/loot-core/src/types/models';
 import stdout from 'mute-stdout';
 import {type ScrapeTransactionsContext} from './importer.d';
-
-// If you exported these from your config types file, import them from there instead.
-type AccountsSelector = string[] | 'all';
-type ReconcileOption = boolean | 'consolidate';
-type BankTarget = {
-	actualAccountId: string;
-	reconcile?: ReconcileOption;
-	accounts?: AccountsSelector;
-};
-
-function isFiniteNumber(x: unknown): x is number {
-	return typeof x === 'number' && Number.isFinite(x);
-}
-
-function stripUndefined<T extends Record<string, any>>(object: T): T {
-	return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined)) as T;
-}
-
-function normalizeTargets(bank: any): BankTarget[] {
-	// New config: targets[]
-	if (Array.isArray(bank?.targets) && bank.targets.length > 0) {
-		return bank.targets
-			.filter((t: any) => t?.actualAccountId)
-			.map((t: any) => ({
-				actualAccountId: t.actualAccountId,
-				// Keep the union semantics:
-				// - false/undefined => no reconcile
-				// - true => reconcile per-target
-				// - 'consolidate' => reconcile consolidated per actualAccountId
-				reconcile: t.reconcile as ReconcileOption | undefined,
-				accounts: t.accounts,
-			}));
-	}
-
-	// Legacy config: actualAccountId + reconcile
-	if (bank?.actualAccountId) {
-		// Backward compatibility: legacy `reconcile: true` historically behaved as consolidated.
-		const legacyReconcile: ReconcileOption | undefined
-			= bank.reconcile === true ? 'consolidate' : (bank.reconcile as ReconcileOption | undefined);
-
-		return [{
-			actualAccountId: bank.actualAccountId,
-			reconcile: legacyReconcile,
-			// Legacy behavior did not support selecting accounts; treat as "all".
-			accounts: 'all',
-		}];
-	}
-
-	return [];
-}
-
-function selectScraperAccounts(
-	allAccounts: any[] | undefined,
-	selector: AccountsSelector | undefined,
-) {
-	const accounts = allAccounts ?? [];
-	if (selector === undefined || selector === 'all') {
-		return accounts;
-	}
-
-	const set = new Set(selector);
-	return accounts.filter(a => set.has(String(a.accountNumber)));
-}
-
-function reconciliationTargetKey(selector: AccountsSelector | undefined, selectedAccounts: any[]) {
-	// Prefer concrete selected account numbers (deterministic once scrape ran)
-	const nums = selectedAccounts
-		.map(a => String(a?.accountNumber))
-		.filter(Boolean)
-		.sort();
-
-	if (nums.length > 0) {
-		return nums.join(',');
-	}
-
-	// Fallback
-	if (selector === undefined || selector === 'all') {
-		return 'all';
-	}
-
-	return [...selector].map(String).sort().join(',');
-}
-
-function stableImportedId(companyId: string, accountNumber: string | undefined, txn: any) {
-	// Prefer scraper identifier if present; fall back to a deterministic composite.
-	const idPart
-		= txn?.identifier
-			?? `${moment(txn?.date).format('YYYY-MM-DD')}:${txn?.chargedAmount}:${txn?.description ?? ''}:${txn?.memo ?? ''}`;
-
-	// AccountNumber is important once multiple cards are aggregated into one Actual account.
-	return `${companyId}:${accountNumber ?? 'unknown'}:${idPart}`;
-}
+import {
+	normalizeTargets,
+	selectScraperAccounts,
+	stripUndefined,
+	stableImportedId,
+	isFiniteNumber,
+	reconciliationTargetKey,
+	uniqueReconciliationImportedId,
+} from './importer.utils';
 
 export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTransactionsContext) {
 	function log(status: any, other?: Record<string, unknown>) {
@@ -146,7 +66,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 		const payees: PayeeEntity[] = await actual.getPayees();
 
-		// Process each target independently (supports per-card, per-company, and consolidated).
+		// Process each target independently.
 		for (const target of targets) {
 			const selectedAccounts = selectScraperAccounts(result.accounts as any[], target.accounts);
 
@@ -184,12 +104,10 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 				}
 			}
 
-			const reconcileMode = target.reconcile;
-			if (!reconcileMode) {
+			// Reconcile: boolean-only, and ALWAYS creates a NEW reconciliation txn (no updates).
+			if (!target.reconcile) {
 				continue;
 			}
-
-			const consolidated = reconcileMode === 'consolidate';
 
 			// Reconciliation balance: sum finite balances of selected accounts.
 			const reconAccounts = selectedAccounts
@@ -215,25 +133,15 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			const currentBalance = actual.utils.integerToAmount(await actual.getAccountBalance(target.actualAccountId));
 			const balanceDiff = scraperBalance - currentBalance;
 
-			// Stable imported_id:
-			// - consolidated: one reconciliation txn per Actual account
-			// - non-consolidated (true): one reconciliation txn per target (account selector set)
-			const reconciliationImportedId = consolidated
-				? `reconciliation-${target.actualAccountId}`
-				: `reconciliation-${target.actualAccountId}:${reconciliationTargetKey(target.accounts, selectedAccounts)}`;
-
-			const allAccountTxns: TransactionEntity[] = await actual.getTransactions(
-				target.actualAccountId,
-				'2000-01-01',
-				moment().add(1, 'year').format('YYYY-MM-DD'),
-			);
-
-			const existingReconciliation = allAccountTxns.find(txn => txn.imported_id === reconciliationImportedId);
-
-			if (existingReconciliation && balanceDiff === 0) {
+			// If there is no diff, creating a reconciliation txn is typically noise.
+			// If you truly want a txn even for 0, remove this guard.
+			if (balanceDiff === 0) {
 				log('RECONCILIATION_NOT_NEEDED', {actualAccountId: target.actualAccountId});
 				continue;
 			}
+
+			const targetKey = reconciliationTargetKey(target.accounts, selectedAccounts);
+			const reconciliationImportedId = uniqueReconciliationImportedId(target.actualAccountId);
 
 			const reconciliationTxn = stripUndefined({
 				account: target.actualAccountId,
@@ -241,23 +149,9 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 				amount: actual.utils.amountToInteger(balanceDiff),
 				payee: null, // IMPORTANT: never pass undefined to updateTransaction schema
 				imported_payee: 'Reconciliation',
-				notes: `Reconciliation${consolidated ? '' : ` (${reconciliationTargetKey(target.accounts, selectedAccounts)})`} from ${currentBalance.toLocaleString()} to ${scraperBalance.toLocaleString()}`,
-				imported_id: reconciliationImportedId,
+				notes: `Reconciliation (${targetKey}) from ${currentBalance.toLocaleString()} to ${scraperBalance.toLocaleString()}`,
+				imported_id: reconciliationImportedId, // NEW every run
 			});
-
-			if (existingReconciliation) {
-				stdout.mute();
-				await actual.updateTransaction(existingReconciliation.id, reconciliationTxn);
-				stdout.unmute();
-
-				log('RECONCILIATION_UPDATED', {
-					actualAccountId: target.actualAccountId,
-					from: currentBalance,
-					to: scraperBalance,
-					diff: balanceDiff,
-				});
-				continue;
-			}
 
 			stdout.mute();
 			const reconciliationResult = await actual.importTransactions(target.actualAccountId, [reconciliationTxn]);
@@ -271,6 +165,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 					from: currentBalance,
 					to: scraperBalance,
 					diff: balanceDiff,
+					importedId: reconciliationImportedId,
 				});
 			}
 		}
