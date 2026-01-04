@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.0...v1.10.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* simplify reconciliation notes formatting in transaction import ([a1b8bd1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a1b8bd1d2eb518b5e9af126760f2ef901564bad8))
+
 # [1.10.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.9.0...v1.10.0) (2026-01-04)
 
 
