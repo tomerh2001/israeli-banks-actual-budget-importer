@@ -25,7 +25,7 @@
   },
   "packageManager": "yarn@4.12.0",
   "dependencies": {
-    "@actual-app/api": "^25.12.0",
+    "@actual-app/api": "^26.0.0",
     "@tomerh2001/israeli-bank-scrapers": "6.4.0",
     "cronstrue": "^3.9.0",
     "lodash": "^4.17.21",
