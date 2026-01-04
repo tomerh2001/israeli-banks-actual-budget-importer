@@ -149,7 +149,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 				amount: actual.utils.amountToInteger(balanceDiff),
 				payee: null, // IMPORTANT: never pass undefined to updateTransaction schema
 				imported_payee: 'Reconciliation',
-				notes: `Reconciliation (${targetKey}) from ${currentBalance.toLocaleString()} to ${scraperBalance.toLocaleString()}`,
+				notes: `Reconciliation from ${currentBalance.toLocaleString()} to ${scraperBalance.toLocaleString()}`,
 				imported_id: reconciliationImportedId, // NEW every run
 			});
 
