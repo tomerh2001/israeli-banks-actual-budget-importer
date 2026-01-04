@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.9.0...v1.10.0) (2026-01-04)
+
+
+### Features
+
+* enhance reconciliation options and update configuration schema ([2d873a5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/2d873a542915be3d35ac7ab36003d4617d6256c4))
+
 # [1.9.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.1...v1.9.0) (2026-01-03)
 
 
