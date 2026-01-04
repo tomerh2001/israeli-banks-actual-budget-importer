@@ -64,6 +64,16 @@
         }
       ]
     },
+    "ReconcileOption": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "const": "consolidate"
+        }
+      ]
+    },
     "ConfigBankTarget": {
       "additionalProperties": false,
       "properties": {
@@ -71,7 +81,7 @@
           "type": "string"
         },
         "reconcile": {
-          "type": "boolean"
+          "$ref": "#/definitions/ReconcileOption"
         },
         "accounts": {
           "$ref": "#/definitions/AccountsSelector"
@@ -89,7 +99,7 @@
           "type": "string"
         },
         "reconcile": {
-          "type": "boolean"
+          "$ref": "#/definitions/ReconcileOption"
         }
       },
       "required": [
@@ -126,7 +136,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -167,7 +177,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -208,7 +218,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -252,7 +262,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -297,7 +307,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -342,7 +352,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -390,7 +400,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",
@@ -436,7 +446,7 @@
               "type": "string"
             },
             "reconcile": {
-              "type": "boolean"
+              "$ref": "#/definitions/ReconcileOption"
             },
             "targets": {
               "type": "array",

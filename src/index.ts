@@ -14,7 +14,7 @@ import cronstrue from 'cronstrue';
 import stdout from 'mute-stdout';
 import config from '../config.json' assert {type: 'json'};
 import type {ConfigBank} from './config.d.ts';
-import {scrapeAndImportTransactions} from './utils.ts';
+import {scrapeAndImportTransactions} from './importer';
 
 let scheduledTask: ScheduledTask;
 

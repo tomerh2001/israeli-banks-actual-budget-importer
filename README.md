@@ -53,7 +53,7 @@ The configuration has **two independent top-level sections**:
 
 ---
 
-### 1) `actual` configuration
+### 1) `actual` section
 
 This section configures the connection to your Actual Budget server and budget.
 It is **always required**, regardless of how you configure banks or targets.
@@ -78,7 +78,7 @@ Nothing in this block changes when using `targets`, credit cards, or multi-accou
 
 ---
 
-### 2) `banks` configuration
+### 2) `banks` section
 
 The `banks` section defines:
 - Which banks to scrape
@@ -88,7 +88,7 @@ The `banks` section defines:
 Each bank entry includes the credentials required by `israeli-bank-scrapers`
 (e.g. `userCode`, `username`, `password`, etc.) and supports **multiple mapping modes**.
 
-#### Using `targets` (recommended)
+#### `targets` sub-section
 
 A single bank scrape (for example `visaCal`) may return **multiple accounts/cards**.
 Different users model these differently in Actual, so the importer supports `targets`.
@@ -101,6 +101,21 @@ For each target:
 - Imported transactions = concatenation of transactions from selected cards
 - Reconciliation (if enabled) = sum of balances of selected cards
   (only cards with a valid numeric balance are included)
+
+---
+
+#### Reconciliation modes
+
+The `reconcile` field can be configured per bank (legacy mapping) or per target.
+
+Supported values:
+- `false` (or omitted): no reconciliation transaction is created/updated.
+- `true`: reconciliation is created/updated **per target** (recommended when multiple targets share the same `actualAccountId`).
+- `"consolidate"`: reconciliation is created/updated **consolidated per Actual account** (one reconciliation transaction per `actualAccountId`).
+
+Notes:
+- In **legacy** (single-account) configs, `reconcile: true` behaves like `"consolidate"` for backward compatibility.
+- In `targets` configs, `reconcile: true` is per-target and does not collide across multiple targets that map into the same Actual account.
 
 ---
 
@@ -126,7 +141,7 @@ For each target:
       "targets": [
         {
           "actualAccountId": "actual-creditcards-all",
-          "reconcile": true,
+          "reconcile": "consolidate",
           "accounts": "all"
         }
       ]
@@ -208,12 +223,55 @@ For each target:
 
 ---
 
+#### Example D: Multiple targets importing into the same Actual account (safe per-target reconciliation)
+
+Use `reconcile: true` so each target maintains its own reconciliation transaction (no overwrites).
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-cal-all",
+          "reconcile": true,
+          "accounts": ["8538"]
+        },
+        {
+          "actualAccountId": "actual-cal-all",
+          "reconcile": true,
+          "accounts": ["7697"]
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
 ## Legacy configuration (single Actual account per bank)
 
 This configuration style is **fully supported for backward compatibility**,
 but does **not** allow fine-grained control over multiple cards/accounts.
 
 It maps all scraped accounts from the bank into a single Actual account.
+
+Important:
+- `reconcile: true` in legacy configs behaves like `reconcile: "consolidate"`.
 
 ```json
 {
@@ -262,3 +320,4 @@ This project is open-source. Please see the [LICENSE](./LICENSE) file for licens
 - **israeli-bank-scrapers:** Thanks to the contributors of the bank scraper libraries.
 - **Actual App:** For providing a powerful budgeting API.
 - **Open-source Community:** Your support and contributions are appreciated.
+- 
