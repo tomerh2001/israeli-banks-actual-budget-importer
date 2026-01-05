@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.1...v1.10.2) (2026-01-05)
+
+
+### Bug Fixes
+
+* add timeout configuration for scraper in transaction import ([c2eeb9e](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/c2eeb9e72c9a0a5048fd854e35766a248186b778))
+
 ## [1.10.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.0...v1.10.1) (2026-01-04)
 
 
