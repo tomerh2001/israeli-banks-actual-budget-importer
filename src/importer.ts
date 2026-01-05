@@ -41,6 +41,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 			companyId,
 			startDate: moment().subtract(2, 'years').toDate(),
 			// ExecutablePath: '/opt/homebrew/bin/chromium',
+			timeout: moment(process.env?.TIMEOUT ?? 15, 'minutes').milliseconds(),
 			args: ['--user-data-dir=./chrome-data'],
 			additionalTransactionInformation: true,
 			verbose: process.env?.VERBOSE === 'true',
