@@ -19,11 +19,52 @@ import {
 	selectScraperAccounts,
 	stripUndefined,
 	stableImportedId,
-	isFiniteNumber,
 	reconciliationTargetKey,
 	uniqueReconciliationImportedId,
 } from './importer.utils';
 
+/**
+ * Scrapes bank transactions from a financial institution and imports them into Actual Budget.
+ *
+ * This function:
+ * 1. Validates and normalizes target accounts configuration
+ * 2. Creates and runs a scraper instance for the specified bank
+ * 3. Processes scraped transactions for each configured target account
+ * 4. Maps and imports transactions into Actual Budget, creating payees as needed
+ * 5. Optionally reconciles account balances by creating reconciliation transactions
+ *
+ * @param context - The scraping context configuration
+ * @param context.companyId - The unique identifier for the financial institution (bank company ID)
+ * @param context.bank - Bank credentials and configuration including account mappings and reconciliation settings
+ *
+ * @throws {Error} When no targets are configured for the specified bank
+ * @throws {Error} When scraping fails with error type and message
+ * @throws {Error} When transaction import fails
+ *
+ * @remarks
+ * - Scrapes transactions from the past 2 years
+ * - Automatically creates payees if they don't exist in Actual Budget
+ * - Generates stable imported IDs to prevent duplicate imports
+ * - Reconciliation transactions are only created when there's a balance difference
+ * - All transactions are marked as cleared by default
+ * - Logs progress and results throughout the process
+ *
+ * @example
+ * ```typescript
+ * await scrapeAndImportTransactions({
+ *   companyId: 'israeliBank',
+ *   bank: {
+ *     userCode: '12345',
+ *     password: 'secret',
+ *     targets: [{
+ *       actualAccountId: 'account-uuid',
+ *       accounts: ['123456'],
+ *       reconcile: true
+ *     }]
+ *   }
+ * });
+ * ```
+ */
 export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTransactionsContext) {
 	function log(status: any, other?: Record<string, unknown>) {
 		console.debug({
@@ -112,7 +153,7 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 
 			// Reconciliation balance: sum finite balances of selected accounts.
 			const reconAccounts = selectedAccounts
-				.filter(a => isFiniteNumber(a?.balance))
+				.filter(a => _.isFinite(a?.balance))
 				.map(a => ({accountNumber: String(a.accountNumber), balance: a.balance as number}));
 
 			if (reconAccounts.length === 0) {
