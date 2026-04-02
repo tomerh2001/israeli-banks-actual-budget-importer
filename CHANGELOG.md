@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.3...v1.10.4) (2026-04-02)
+
+
+### Bug Fixes
+
+* detect Actual API version mismatches early ([5fb1ed2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/5fb1ed22643f17eb30962e99fa86be9cfd453d66))
+
 ## [1.10.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.2...v1.10.3) (2026-04-02)
 
 
