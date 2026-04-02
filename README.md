@@ -52,6 +52,18 @@ services:
       - ./chrome-data:/app/chrome-data # Optional (Used to solve 2FA issues like with hapoalim)
 ```
 
+### Actual version compatibility
+
+This importer bundles a specific `@actual-app/api` version, and Actual versions
+the API package and the server together.
+
+If you upgrade your Actual server, upgrade this importer image as well. A stale
+importer image against a newer Actual server can fail during startup with
+errors such as `out-of-sync-migrations`.
+
+The importer now checks the server version before downloading the budget and
+fails early with a clear mismatch message that includes both versions.
+
 ## Configuration
 
 The application configuration is defined using JSON and validated against a schema.  

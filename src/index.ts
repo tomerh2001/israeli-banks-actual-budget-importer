@@ -5,7 +5,6 @@
 
 import process from 'node:process';
 import {type CompanyTypes} from '@tomerh2001/israeli-bank-scrapers';
-import _ from 'lodash';
 import actual from '@actual-app/api';
 import Queue from 'p-queue';
 import moment from 'moment';
@@ -13,10 +12,42 @@ import cron, {type ScheduledTask, validate} from 'node-cron';
 import cronstrue from 'cronstrue';
 import stdout from 'mute-stdout';
 import config from '../config.json' assert {type: 'json'};
-import type {ConfigBank} from './config.d.ts';
-import {scrapeAndImportTransactions} from './importer';
+import packageJson from '../package.json' assert {type: 'json'};
+import type {Config, ConfigBank} from './config.d.ts';
+import type {ScrapeTransactionsContext} from './importer.types.ts';
+import {scrapeAndImportTransactions} from './importer.ts';
 
 let scheduledTask: ScheduledTask;
+const importerConfig = config as unknown as Config;
+const bundledActualApiVersion = packageJson.dependencies?.['@actual-app/api'] ?? 'unknown';
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const actualInitConfig: Config['actual']['init'] = importerConfig.actual.init;
+const actualBudgetConfig: Config['actual']['budget'] = importerConfig.actual.budget;
+const configuredBanks = Object.entries(importerConfig.banks) as Array<[CompanyTypes, ConfigBank]>;
+
+function formatActualVersionMismatch(serverVersion: string) {
+	return [
+		`Actual server version mismatch: server reports ${serverVersion},`,
+		`but this importer bundles @actual-app/api ${bundledActualApiVersion}.`,
+		`Update the importer image to a release built against Actual ${serverVersion},`,
+		`or downgrade Actual to ${bundledActualApiVersion}.`,
+	].join(' ');
+}
+
+async function assertActualVersionCompatibility() {
+	// Actual versions the server and @actual-app/api together, so fail early
+	// with an actionable message instead of surfacing a migration stack trace.
+	const serverVersion = await actual.getServerVersion();
+	if (!('version' in serverVersion)) {
+		return serverVersion;
+	}
+
+	if (serverVersion.version !== bundledActualApiVersion) {
+		throw new Error(formatActualVersionMismatch(serverVersion.version));
+	}
+
+	return serverVersion;
+}
 
 /**
  * Main execution function that orchestrates the scraping and importing of bank transactions.
@@ -44,12 +75,35 @@ async function run() {
 	});
 
 	stdout.mute();
-	await actual.init(config.actual.init);
-	await actual.downloadBudget(config.actual.budget.syncId, config.actual.budget);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+	await actual.init(actualInitConfig);
+	const serverVersion = await assertActualVersionCompatibility();
+
+	try {
+		await actual.downloadBudget(actualBudgetConfig.syncId, actualBudgetConfig);
+	} catch (error) {
+		if (error instanceof Error && error.message.includes('out-of-sync-migrations')) {
+			const serverVersionNote = 'version' in serverVersion
+				? ` Server reports ${serverVersion.version}; importer bundles @actual-app/api ${bundledActualApiVersion}.`
+				: '';
+			const mismatchMessage = [
+				'Actual failed with "out-of-sync-migrations".',
+				'This usually means the Actual server version and the importer\'s bundled @actual-app/api version do not match.',
+				serverVersionNote.trim(),
+			].filter(Boolean).join(' ');
+
+			throw new Error(mismatchMessage);
+		}
+
+		throw error;
+	}
+
 	stdout.unmute();
 
-	for (const [companyId, bank] of _.entries(config.banks) as Array<[CompanyTypes, ConfigBank]>) {
-		await queue.add(async () => scrapeAndImportTransactions({companyId, bank}));
+	for (const [companyId, bank] of configuredBanks) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		const taskContext: ScrapeTransactionsContext = {companyId, bank};
+		await queue.add(async () => scrapeAndImportTransactions(taskContext));
 	}
 
 	await queue.onIdle();
@@ -108,7 +162,6 @@ if (process.env?.SCHEDULE) {
 
 	printNextRunTime();
 } else {
-	await safeRun().finally(() => {
-		setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
-	});
+	await safeRun();
+	setTimeout(() => process.exit(0), moment.duration(5, 'seconds').asMilliseconds());
 }

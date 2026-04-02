@@ -77,16 +77,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actual-app/api@npm:^26.1.0":
-  version: 26.1.0
-  resolution: "@actual-app/api@npm:26.1.0"
+"@actual-app/api@npm:26.3.0":
+  version: 26.3.0
+  resolution: "@actual-app/api@npm:26.3.0"
   dependencies:
     "@actual-app/crdt": "npm:^2.1.0"
-    better-sqlite3: "npm:^12.4.1"
+    better-sqlite3: "npm:^12.6.2"
     compare-versions: "npm:^6.1.1"
     node-fetch: "npm:^3.3.2"
     uuid: "npm:^13.0.0"
-  checksum: 10c0/89719bda5c402781b12947d2d9fef59a02bfbe8eed8b9a55e9e0d214c4d2dec793d2b323203a06ee2cff4c46b8e10c3c906f5703f7c33c21eda28ab7da6031e2
+  checksum: 10c0/dceed5b2d46944ab91155364021f940064e993ff547aad4720fc7fec06bd8662696e62dc1de5fd35ad8597857c018598f55141cb464aad861ff0ab5da9d9ffba
   languageName: node
   linkType: hard
 
@@ -2006,14 +2006,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^12.4.1":
-  version: 12.5.0
-  resolution: "better-sqlite3@npm:12.5.0"
+"better-sqlite3@npm:^12.6.2":
+  version: 12.8.0
+  resolution: "better-sqlite3@npm:12.8.0"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 10c0/50016aaa9a9db768907da5b109f12f8bb6f6d9be34d68b5623d901fe038cdac0d81be37aa280c27c8e0604d6c2482584b14f9c40f75ad6aa0baa59278c5f7a6a
+  checksum: 10c0/b31da8a8a9bd0dd77d44c11fbfc72141a18b7267aed1ee5bedd481397415ace18eb54140706f82aca8149e4102fb2a543f833761e80f9668470ed53d03958515
   languageName: node
   linkType: hard
 
@@ -5121,7 +5121,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "israeli-banks-actual-budget-importer@workspace:."
   dependencies:
-    "@actual-app/api": "npm:^26.1.0"
+    "@actual-app/api": "npm:26.3.0"
     "@codedependant/semantic-release-docker": "npm:^5.1.1"
     "@semantic-release/changelog": "npm:^6.0.3"
     "@semantic-release/commit-analyzer": "npm:^13.0.1"

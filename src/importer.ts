@@ -11,9 +11,9 @@ import {createScraper, type ScraperCredentials} from '@tomerh2001/israeli-bank-s
 import _ from 'lodash';
 import moment from 'moment';
 import actual from '@actual-app/api';
-import {type PayeeEntity} from '@actual-app/api/@types/loot-core/src/types/models';
+import {type ImportTransactionEntity, type PayeeEntity} from '@actual-app/api/@types/loot-core/src/types/models';
 import stdout from 'mute-stdout';
-import {type ScrapeTransactionsContext} from './importer.d';
+import {type ScrapeTransactionsContext} from './importer.types.ts';
 import {
 	normalizeTargets,
 	selectScraperAccounts,
@@ -148,11 +148,12 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 					notes: txn.memo,
 					imported_id: stableImportedId(companyId, accountNumber, txn),
 				}));
+				const importTransactionsPayload = await Promise.all(mappedTransactions) as ImportTransactionEntity[];
 
 				stdout.mute();
 				const importResult = await actual.importTransactions(
 					target.actualAccountId,
-					await Promise.all(mappedTransactions),
+					importTransactionsPayload,
 					{defaultCleared: true},
 				);
 				stdout.unmute();
