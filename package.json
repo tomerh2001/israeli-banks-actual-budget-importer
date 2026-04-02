@@ -1,6 +1,7 @@
 {
   "version": "1.10.4",
   "name": "israeli-banks-actual-budget-importer",
+  "license": "Apache-2.0",
   "module": "index.ts",
   "type": "module",
   "scripts": {
