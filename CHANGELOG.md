@@ -1,3 +1,130 @@
+## [1.10.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.3...v1.10.4) (2026-04-02)
+
+
+### Bug Fixes
+
+* detect Actual API version mismatches early ([5fb1ed2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/5fb1ed22643f17eb30962e99fa86be9cfd453d66))
+
+## [1.10.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.2...v1.10.3) (2026-04-02)
+
+
+### Bug Fixes
+
+* skip pending transactions during import ([4d9c251](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/4d9c251ad1a7937f58830e4308c10db83ab44359))
+
+## [1.10.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.1...v1.10.2) (2026-01-05)
+
+
+### Bug Fixes
+
+* add timeout configuration for scraper in transaction import ([c2eeb9e](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/c2eeb9e72c9a0a5048fd854e35766a248186b778))
+
+## [1.10.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.0...v1.10.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* simplify reconciliation notes formatting in transaction import ([a1b8bd1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a1b8bd1d2eb518b5e9af126760f2ef901564bad8))
+
+# [1.10.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.9.0...v1.10.0) (2026-01-04)
+
+
+### Features
+
+* enhance reconciliation options and update configuration schema ([2d873a5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/2d873a542915be3d35ac7ab36003d4617d6256c4))
+
+# [1.9.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.1...v1.9.0) (2026-01-03)
+
+
+### Features
+
+* added support for bank hapoalim investment accounts ([f1017d8](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/f1017d8b9eae21c8a99d92389e6bd3b49f1cf7aa))
+
+## [1.8.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.8.0...v1.8.1) (2026-01-03)
+
+
+### Bug Fixes
+
+* **logging:** add timestamp to debug logs in scrapeAndImportTransactions ([79a8f53](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/79a8f53726e63fd72234a1a4066ce9e151397fb1))
+
+# [1.8.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.6...v1.8.0) (2026-01-03)
+
+
+### Features
+
+* **config:** add targets/accounts mapping and update reconciliation docs ([9f56fe0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/9f56fe0fa984304186af4c95175a2e3ceb6b83b8))
+
+## [1.7.6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.5...v1.7.6) (2025-12-04)
+
+
+### Bug Fixes
+
+* update transaction scraping start date to two years ago for improved data accuracy ([a08e3e6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a08e3e699650844ed1015879355bdd9d157e2c60))
+
+## [1.7.5](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.4...v1.7.5) (2025-12-04)
+
+
+### Bug Fixes
+
+* optimize reconciliation logic to skip unnecessary updates when balances are in sync ([5153911](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/515391177d37e5ef0577ab5a306317e21bf990e4))
+
+## [1.7.4](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.3...v1.7.4) (2025-12-04)
+
+
+### Bug Fixes
+
+* remove unnecessary reconciliation removal logic when balances are in sync ([0fcc569](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/0fcc56977394265502dd871bc0973a05e614fffe))
+
+## [1.7.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.2...v1.7.3) (2025-12-04)
+
+
+### Bug Fixes
+
+* streamline reconciliation transaction handling and improve logging ([46fc2b0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/46fc2b082e4e7b69666bb338960e0b7e6152f892))
+
+## [1.7.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.1...v1.7.2) (2025-12-04)
+
+
+### Bug Fixes
+
+* improve reconciliation logic to log transaction removal when balances are in sync ([c2f3fba](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/c2f3fba73588fb1591ddfcc92cb0e2b0fe9a54f5))
+
+## [1.7.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.7.0...v1.7.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* extend transaction scraping period to 12 months and remove debug logs ([bcfccd8](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/bcfccd8215af67ca1ca714b3677d55ad13c655d6))
+
+# [1.7.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.1...v1.7.0) (2025-12-04)
+
+
+### Features
+
+* add logging for first 5 scraped transactions ([47dc4e9](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/47dc4e956395edcddc3779fe252bc15b9ce9d3ca))
+
+## [1.6.1](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.6.0...v1.6.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* update transaction notes to use memo instead of status ([1483fdb](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/1483fdbd35c2e23106ab561926df79797c5b09f8))
+
+# [1.6.0](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.3...v1.6.0) (2025-12-02)
+
+
+### Features
+
+* enhance reconciliation process ([5ebf9a6](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/5ebf9a6453aa8db1e6f23fd81d114fbef5c85e5c))
+
+## [1.5.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.2...v1.5.3) (2025-11-24)
+
+
+### Bug Fixes
+
+* update Node.js version to 24 and adjust file permissions ([a4a2658](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/a4a2658537057f4a5a8a4c1888791b94ec987577))
+* Updated packages to latest version ([91c3f6b](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/91c3f6bf57cbbc2a9f17925d13a393ebd9746510))
+
 ## [1.5.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.5.1...v1.5.2) (2025-06-09)
 
 

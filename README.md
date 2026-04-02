@@ -9,20 +9,32 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 
 ## Features
 
-1. **Multi Bank Support**: Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
+1. **Multi Bank Support**  
+   Supports all of the institutions that the [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) library covers (Bank Hapoalim, Cal, Leumi, Discount, etc.).
 
-2. **Prevents duplicate transactions** using Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
+2. **Prevents duplicate transactions**  
+   Uses Actual’s [`imported_id`](https://actualbudget.org/docs/api/reference/#transactions) logic.
 
-3. **Automatic Account Creation**: If the bank account does not exist in Actual, it will be created automatically.
+3. **Automatic Account Creation**  
+   If the bank account does not exist in Actual, it will be created automatically.
 
-4. **Reconciliation:** Optional reconciliation to adjust account balances automatically.
+4. **Reconciliation**  
+   Optional reconciliation to adjust account balances automatically.
 
-5. **Concurrent Processing:** Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
+5. **Credit Card / Multi-Account Mapping (Targets)**  
+   Supports mapping multiple scraped accounts/cards into one Actual account, or mapping each scraped card into its own Actual account (via `targets` and `accounts`).
+
+6. **Concurrent Processing**  
+   Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
+
+7. **Pending transactions are skipped**  
+   Only completed transactions are imported into Actual, which avoids provisional card amounts and pre-conversion foreign-currency rows landing in the final ledger.
 
 ## Installation
 
 ### Docker
 https://hub.docker.com/r/tomerh2001/israeli-banks-actual-budget-importer
+
 #### Example
 ```yml
 services:
@@ -40,27 +52,253 @@ services:
       - ./chrome-data:/app/chrome-data # Optional (Used to solve 2FA issues like with hapoalim)
 ```
 
+### Actual version compatibility
+
+This importer bundles a specific `@actual-app/api` version, and Actual versions
+the API package and the server together.
+
+If you upgrade your Actual server, upgrade this importer image as well. A stale
+importer image against a newer Actual server can fail during startup with
+errors such as `out-of-sync-migrations`.
+
+The importer now checks the server version before downloading the budget and
+fails early with a clear mismatch message that includes both versions.
+
 ## Configuration
 
-The application configuration is defined using JSON and validated against a schema. The key configuration file is `config.json` and its schema is described in `config.schema.json`.
+The application configuration is defined using JSON and validated against a schema.  
+The main configuration file is `config.json`.
 
-### Configuration Structure
+The configuration has **two independent top-level sections**:
+1. `actual` – Configures the Actual Budget connection.
+2. `banks` – Configures bank scrapers and account mappings.
 
-- **actual:**  
-  Contains settings for the Actual API integration:
-  - `init`: Initialization parameters (e.g., server URL, password).
-  - `budget`: Contains properties like `syncId` and `password` for synchronizing budgets.
+---
 
-- **banks:**  
-  Defines bank-specific settings for each supported bank. Each entry typically requires:
-  - `actualAccountId`: The account identifier in Actual.
-  - `password`: The bank account password.
-  - Additional properties (e.g., `userCode`, `username`, or other bank-specific credentials) as required.
-  - `reconcile` (optional): A flag to enable balance reconciliation.
+### 1) `actual` section
 
-Make sure your `config.json` follows the schema defined in `config.schema.json`.
+This section configures the connection to your Actual Budget server and budget.  
+It is **always required**, regardless of how you configure banks or targets.
 
-Example snippet:
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  }
+}
+```
+
+Nothing in this block changes when using `targets`, credit cards, or multi-account mappings.
+
+`actual.init` is passed directly to `@actual-app/api`.
+
+- Use `password` for the standard Actual server password flow.
+- Use `sessionToken` instead of `password` if you authenticate to Actual via a session token.
+- If your Actual server uses OpenID/OAuth, the provider credentials belong in the Actual server configuration, not in this importer's `config.json`.
+
+Example with `sessionToken`:
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "sessionToken": "your_actual_session_token",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  }
+}
+```
+
+---
+
+### 2) `banks` section
+
+The `banks` section defines:
+- Which banks to scrape
+- The credentials for each bank
+- How scraped accounts/cards are mapped into Actual accounts
+
+Each bank entry includes the credentials required by `israeli-bank-scrapers`
+(e.g. `userCode`, `username`, `password`, etc.).
+
+### One Zero
+
+For `oneZero`, `config.json` can use a long-term OTP token:
+
+```json
+{
+  "banks": {
+    "oneZero": {
+      "email": "you@example.com",
+      "password": "your_one_zero_password",
+      "otpLongTermToken": "your_long_term_token",
+      "actualAccountId": "actual-account-id"
+    }
+  }
+}
+```
+
+The importer uses a JSON config file, so the practical One Zero setup here is
+the `otpLongTermToken` flow rather than a runtime callback like
+`otpCodeRetriever`.
+
+### Headless / 2FA notes
+
+- `chrome-data` persists Chromium session data and helps avoid repeated OTP prompts after an interactive login.
+- `SHOW_BROWSER=true` is only for interactive debugging. It launches Chromium in the container process, but this project does not expose a built-in web UI or remote desktop for that browser.
+- On a headless host, the usual pattern is to keep `chrome-data` persistent and only bring up a graphical environment when you need to refresh a bank session manually.
+- The importer currently asks bank scrapers for the last 2 years of data.
+
+---
+
+### `targets` sub-section
+
+A single bank scrape (for example `visaCal`) may return **multiple accounts/cards**.  
+Different users model these differently in Actual, so the importer supports `targets`.
+
+Each **target** represents:
+- One Actual account
+- One or more scraped accounts/cards that feed into it
+
+For each target:
+- Imported transactions = concatenation of transactions from selected cards
+- Reconciliation (if enabled) = sum of balances of selected cards  
+  (only cards with a valid numeric balance are included)
+
+---
+
+### Reconciliation behavior
+
+- Reconciliation is controlled by the `reconcile` boolean.
+- When `reconcile: true`, **a new reconciliation transaction is created on every run** (no updates, no reconciliation).
+- Existing reconciliation transactions are never modified or reused.
+- If `reconcile` is omitted or set to `false`, no reconciliation transaction is created.
+
+---
+
+### Example A: One Actual account for all VisaCal cards
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-creditcards-all",
+          "reconcile": true,
+          "accounts": "all"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+### Example B: One Actual account per VisaCal card
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-card-8538",
+          "reconcile": true,
+          "accounts": ["8538"]
+        },
+        {
+          "actualAccountId": "actual-card-7697",
+          "reconcile": true,
+          "accounts": ["7697"]
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+### Example C: Grouped cards into a single Actual account (subset)
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "password": "your_actual_password",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  },
+  "banks": {
+    "visaCal": {
+      "username": "bank_username",
+      "password": "bank_password",
+      "targets": [
+        {
+          "actualAccountId": "actual-cal-primary",
+          "reconcile": true,
+          "accounts": ["8538", "7697"]
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## Legacy configuration (single Actual account per bank)
+
+This configuration style is **fully supported for backward compatibility**,  
+but does **not** allow fine-grained control over multiple cards/accounts.
+
+It maps all scraped accounts from the bank into a single Actual account.
 
 ```json
 {
@@ -87,10 +325,18 @@ Example snippet:
       "username": "bank_username",
       "password": "bank_password"
     }
-    // Additional bank configurations go here...
   }
 }
 ```
+
+---
+
+## Notes
+
+- The `actual` block is **always required** and independent of bank configuration.
+- `targets` are optional but strongly recommended for credit-card providers.
+- Duplicate transactions are prevented using a stable `imported_id`.
+- Credit card balances are often negative; reconciliation uses the values as returned by the bank.
 
 ## License
 
