@@ -552,6 +552,9 @@
         "password": {
           "type": "string"
         },
+        "sessionToken": {
+          "type": "string"
+        },
         "serverURL": {
           "type": "string"
         }

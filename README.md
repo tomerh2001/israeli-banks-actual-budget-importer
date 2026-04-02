@@ -98,6 +98,30 @@ It is **always required**, regardless of how you configure banks or targets.
 
 Nothing in this block changes when using `targets`, credit cards, or multi-account mappings.
 
+`actual.init` is passed directly to `@actual-app/api`.
+
+- Use `password` for the standard Actual server password flow.
+- Use `sessionToken` instead of `password` if you authenticate to Actual via a session token.
+- If your Actual server uses OpenID/OAuth, the provider credentials belong in the Actual server configuration, not in this importer's `config.json`.
+
+Example with `sessionToken`:
+
+```json
+{
+  "actual": {
+    "init": {
+      "dataDir": "./data",
+      "sessionToken": "your_actual_session_token",
+      "serverURL": "https://your-actual-server.com"
+    },
+    "budget": {
+      "syncId": "your_sync_id",
+      "password": "your_budget_password"
+    }
+  }
+}
+```
+
 ---
 
 ### 2) `banks` section
@@ -109,6 +133,34 @@ The `banks` section defines:
 
 Each bank entry includes the credentials required by `israeli-bank-scrapers`
 (e.g. `userCode`, `username`, `password`, etc.).
+
+### One Zero
+
+For `oneZero`, `config.json` can use a long-term OTP token:
+
+```json
+{
+  "banks": {
+    "oneZero": {
+      "email": "you@example.com",
+      "password": "your_one_zero_password",
+      "otpLongTermToken": "your_long_term_token",
+      "actualAccountId": "actual-account-id"
+    }
+  }
+}
+```
+
+The importer uses a JSON config file, so the practical One Zero setup here is
+the `otpLongTermToken` flow rather than a runtime callback like
+`otpCodeRetriever`.
+
+### Headless / 2FA notes
+
+- `chrome-data` persists Chromium session data and helps avoid repeated OTP prompts after an interactive login.
+- `SHOW_BROWSER=true` is only for interactive debugging. It launches Chromium in the container process, but this project does not expose a built-in web UI or remote desktop for that browser.
+- On a headless host, the usual pattern is to keep `chrome-data` persistent and only bring up a graphical environment when you need to refresh a bank session manually.
+- The importer currently asks bank scrapers for the last 2 years of data.
 
 ---
 

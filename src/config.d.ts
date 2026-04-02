@@ -1,5 +1,5 @@
 import type {InitConfig} from '@actual-app/api/@types/loot-core/server/main';
-import type {ScraperCredentials, CompanyTypes} from 'israeli-bank-scrapers';
+import type {ScraperCredentials, CompanyTypes} from '@tomerh2001/israeli-bank-scrapers';
 
 /**
  * Configuration object for the Israeli Banks Actual Budget Importer.
