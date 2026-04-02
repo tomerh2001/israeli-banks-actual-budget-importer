@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.2...v1.10.3) (2026-04-02)
+
+
+### Bug Fixes
+
+* skip pending transactions during import ([4d9c251](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/commit/4d9c251ad1a7937f58830e4308c10db83ab44359))
+
 ## [1.10.2](https://github.com/tomerh2001/israeli-banks-actual-budget-importer/compare/v1.10.1...v1.10.2) (2026-01-05)
 
 
