@@ -112,16 +112,35 @@ export async function scrapeAndImportTransactions({companyId, bank}: ScrapeTrans
 		for (const target of targets) {
 			const selectedAccounts = selectScraperAccounts(result.accounts as any[], target.accounts);
 
-			// Transactions to import: selected accounts with txns.
+			// Pending transactions can still carry provisional amounts or FX values,
+			// so only completed transactions should be imported into the final ledger.
 			const transactions = _(selectedAccounts)
 				.filter(a => Array.isArray(a.txns) && a.txns.length > 0)
 				.flatMap(a => a.txns.map((t: any) => ({txn: t, accountNumber: String(a.accountNumber)})))
 				.value();
+			const pendingTransactions = transactions.filter(({txn}) => txn?.status === 'pending');
+			const completedTransactions = transactions.filter(({txn}) => txn?.status !== 'pending');
 
-			if (transactions.length === 0) {
+			if (pendingTransactions.length > 0) {
+				log('SKIPPED_PENDING_TRANSACTIONS', {
+					actualAccountId: target.actualAccountId,
+					count: pendingTransactions.length,
+					sample: pendingTransactions.slice(0, 5).map(({txn, accountNumber}) => ({
+						accountNumber,
+						date: moment(txn?.date).format('YYYY-MM-DD'),
+						description: txn?.description,
+						originalAmount: txn?.originalAmount,
+						originalCurrency: txn?.originalCurrency,
+						chargedAmount: txn?.chargedAmount,
+						chargedCurrency: txn?.chargedCurrency,
+					})),
+				});
+			}
+
+			if (completedTransactions.length === 0) {
 				log('NO_TRANSACTIONS', {actualAccountId: target.actualAccountId});
 			} else {
-				const mappedTransactions = transactions.map(async ({txn, accountNumber}) => stripUndefined({
+				const mappedTransactions = completedTransactions.map(async ({txn, accountNumber}) => stripUndefined({
 					date: moment(txn.date).format('YYYY-MM-DD'),
 					amount: actual.utils.amountToInteger(txn.chargedAmount),
 					payee: _.find(payees, {name: txn.description})?.id ?? (await actual.createPayee({name: txn.description})),

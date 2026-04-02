@@ -27,6 +27,9 @@ This project provides an importer from Israeli banks (via [israeli-bank-scrapers
 6. **Concurrent Processing**  
    Uses a queue (via [p-queue](https://www.npmjs.com/package/p-queue)) to manage scraping tasks concurrently.
 
+7. **Pending transactions are skipped**  
+   Only completed transactions are imported into Actual, which avoids provisional card amounts and pre-conversion foreign-currency rows landing in the final ledger.
+
 ## Installation
 
 ### Docker
