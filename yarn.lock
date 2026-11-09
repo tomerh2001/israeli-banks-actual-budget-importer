@@ -2579,11 +2579,11 @@ __metadata:
   linkType: hard
 
 "cronstrue@npm:^3.9.0":
-  version: 3.9.0
-  resolution: "cronstrue@npm:3.9.0"
+  version: 3.39.0
+  resolution: "cronstrue@npm:3.39.0"
   bin:
     cronstrue: bin/cli.js
-  checksum: 10c0/391ae21c28846ed5c17562f0a8b3ff696f7f34cb6222601281e58dd27e468b5a54a07cfe4f3d89f5d07453015057e6e02db1cb802276754a6de43eb4ba45b128
+  checksum: 10c0/ff141bfea3c792cbf0e8b62a2d74089682f309eecaf18df3eea6f819d7c0ce2d700bbd8e1c189230debc9a226430c74ca0d9bca9330d7769dd3fb72e58c6148c
   languageName: node
   linkType: hard
 
